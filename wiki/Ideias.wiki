@@ -12,6 +12,10 @@ O prof falou que devia ser em java, um servlet caso fosse uma aplicação web. N
 
 == Mostrar mapas ==
 
-Para mostrar mapas podemos embeber uma janela de browser que seja compativel com javascript. Principalmente no desktop é importante ter esta função visto que é mais importante deixar o user escolher a localização.
+Para mostrar mapas numa app de desktop em java podemos embeber uma janela de browser que seja compativel com javascript. Principalmente no desktop é importante ter esta função visto que é mais importante deixar o user escolher a localização.
 
 Ver exemplos em http://stackoverflow.com/questions/996954/java-api-for-google-maps-or-similar
+
+Se fizermos num browser podemos usar o app engine ou qq coisa parecida:
+ * http://code.google.com/intl/pt-PT/eclipse/docs/getting_started.html
+ * http://code.google.com/p/gwt-google-apis/wiki/MapsGettingStarted
