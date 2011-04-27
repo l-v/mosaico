@@ -1,0 +1,5 @@
+#summary Lista ideias e links.
+
+= Localização =
+
+Em android temos a opção de obter a localização actual do dispositivo e também a opção de desenhar mapas, ver infor em http://developer.android.com/guide/topics/location/index.html. Convém notar que o desenho de mapas parece não estar disponível em todos os dispositivos.
