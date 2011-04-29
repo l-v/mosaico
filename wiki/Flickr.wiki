@@ -1,0 +1,5 @@
+#summary Info about flickr API
+
+Get photos for a location
+http://www.flickr.com/services/api/flickr.photos.search.html
+
