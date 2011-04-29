@@ -1,0 +1,3 @@
+#summary Info about google maps integration
+
+http://mobiforge.com/developing/story/using-google-maps-android
