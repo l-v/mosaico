@@ -1,0 +1,3 @@
+#summary Details about twitter integration
+
+http://dev.twitter.com/doc/post/statuses/update
