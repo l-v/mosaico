@@ -1,9 +1,13 @@
 #summary Info about flickr API
 
-Get photos for a location
+=Get photos for a location=
 http://www.flickr.com/services/api/flickr.photos.search.html
 
-Please note that they limit the output:
+==Please note that they limit the output:==
 
  Geo queries require some sort of limiting agent in order to prevent the database from crying. This is basically like the check against "parameterless searches" for queries without a geo component. 
  A tag, for instance, is considered a limiting agent as are user defined min_date_taken and min_date_upload parameters — If no limiting factor is passed we return only photos added in the last 12 hours (though we may extend the limit in the future).
+
+=Getting more details about the photos=
+Using flickr.photos.getExif
+http://www.flickr.com/services/api/flickr.photos.getExif.html
