@@ -8,6 +8,11 @@ http://www.flickr.com/services/api/flickr.photos.search.html
  Geo queries require some sort of limiting agent in order to prevent the database from crying. This is basically like the check against "parameterless searches" for queries without a geo component. 
  A tag, for instance, is considered a limiting agent as are user defined min_date_taken and min_date_upload parameters — If no limiting factor is passed we return only photos added in the last 12 hours (though we may extend the limit in the future).
 
-=Getting more details about the photos=
+==GPS coordinates in the answer to the search==
+We can pass _extra_ parameters when using flickr.photos.search:
+
+*extras (Optional)*: A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_z, url_l, url_o
+
+=EXIF=
 Using flickr.photos.getExif
 http://www.flickr.com/services/api/flickr.photos.getExif.html
