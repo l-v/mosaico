@@ -8,7 +8,7 @@ public class Photo{
 }
 }}}
 
-=PhotoSet=
+=!PhotoSet=
 _list of Photos_
 {{{
 public class PhotoSet{
