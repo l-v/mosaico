@@ -1,0 +1,17 @@
+#summary Designin the data structure and java classes.
+
+=Photo=
+_saves the info for a single photo._
+{{{
+public class Photo{
+
+}
+}}}
+
+=PhotoSet=
+_list of Photos_
+{{{
+public class PhotoSet{
+
+}
+}}}
