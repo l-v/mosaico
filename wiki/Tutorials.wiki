@@ -1,4 +1,4 @@
-#Tutorials and other useful resources
+#summary Tutorials and other useful resources
 
 = Tutorials =
 ===Tutorials for `Android` beginners like us :P===
