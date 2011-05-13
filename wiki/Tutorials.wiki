@@ -1,14 +1,19 @@
 #summary Tutorials and other useful resources
 
 = Tutorials =
-===Tutorials for `Android` beginners like us :P===
+===`Android` for beginners like us :P===
  * [http://www.vogella.de/articles/Android/article.html Android Startup] - this tutorial covers the use of *`Android`* with *`Eclipse`*. Totally worth following. It also gives explanations about the basics of an Android App. It is using Gingerbread API but is really basic so it doesn't really matter.
 
-===Tutorial for processing `JSON`===
+===Processing `JSON`===
  * [http://www.vogella.de/articles/AndroidJSON/article.html Processing JSON]
 
-===Tutorial for Location API and Google Maps in Android===
+===Location API and Google Maps in Android===
  * [http://www.vogella.de/articles/AndroidLocationAPI/article.html Tutorial]
 
+===Configure Android device for testing===
+If you have an Android device you can test the applications you write right on your phone.
+ # Connect your phone to your PC thourgh USB, and set the phone to "Charge-only"
+ # Go to `Settings > Applications > Development` and enable `"USB Debugging"`
+ # A new device will appear for installation. If drivers are needed, use the ones provided form the manufacturer. 
 
 _Other tutorials may be found on Lars Vogel's Android website: http://www.vogella.de/android.html _
