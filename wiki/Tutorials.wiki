@@ -11,4 +11,5 @@
 *Tutorial for Location API and Google Maps in Android*
  * [http://www.vogella.de/articles/AndroidLocationAPI/article.html Tutorial]
 
-Other tutorials may be found on Lars Vogel's Android website: http://www.vogella.de/android.html
+
+_Other tutorials may be found on Lars Vogel's Android website: http://www.vogella.de/android.html _
