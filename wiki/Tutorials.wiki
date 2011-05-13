@@ -1,5 +1,4 @@
-#labels Phase-Support
-#tutorials and other useful resources
+#Tutorials and other useful resources
 
 = Tutorials =
 ===Tutorials for `Android` beginners like us :P===
