@@ -1,3 +1,12 @@
 #summary One-sentence summary of this page.
 
-Location API for android: http://developer.android.com/guide/topics/location/index.html
+==APIs==
+ * Android: http://developer.android.com/guide/topics/location/index.html
+
+==Resources==
+===Ready project===
+Open source projects that can be scanned for example code
+ * http://code.google.com/p/open-gpstracker/
+ * http://code.google.com/p/android-gps-emulator/
+ * http://code.google.com/p/gpslogger/
+ * http://code.google.com/p/gps-averaging/ - very good one!
