@@ -16,7 +16,7 @@ If you have an Android device you can test the applications you write right on y
  # Go to `Settings > Applications > Development` and enable `"USB Debugging"`
  # A new device will appear for installation. If drivers are needed, use the ones provided form the manufacturer. 
 
-=== Application Signig ===
+=== Application Signing ===
 This is also needed for the map key.
 
 http://developer.android.com/guide/publishing/app-signing.html
