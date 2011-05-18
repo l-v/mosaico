@@ -1,0 +1,16 @@
+#summary Global Settings for the application
+#labels Phase-Requirements
+
+= Project Settings =
+
+When we create a new Android Project we must specify certain things before start programming :P so here is one suggestion. We must all agree on one specific set of values.
+
+== Eclipse Project ==
+|| Project Name || Mosaico ||
+|| Build Target || Android 2.2 ||
+|| Application Name || Mosaico ||
+|| Package Name || `pt.up.fe.android.mosaico` ||
+|| Activity || <we should choose our activites (screens)> ||
+|| Min SDK Version || 8 ||
+
+
