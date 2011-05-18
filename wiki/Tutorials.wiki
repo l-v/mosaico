@@ -22,5 +22,5 @@ This is also needed for the map key.
 http://developer.android.com/guide/publishing/app-signing.html
 
 === Video Tutorials ===
- * http://developer.android.com/videos/index.html#v=3RmoWK0KADs
+ * http://developer.android.com/videos/index.html#v=3RmoWK0KADs - This one reeeeeaally kicks ass!
 _Other tutorials may be found on Lars Vogel's Android website: http://www.vogella.de/android.html _
