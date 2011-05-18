@@ -20,4 +20,7 @@ If you have an Android device you can test the applications you write right on y
 This is also needed for the map key.
 
 http://developer.android.com/guide/publishing/app-signing.html
+
+=== Video Tutorials ===
+ * http://developer.android.com/videos/index.html#v=3RmoWK0KADs
 _Other tutorials may be found on Lars Vogel's Android website: http://www.vogella.de/android.html _
