@@ -15,6 +15,9 @@ When we create a new Android Project we must specify certain things before start
 || *Public App key* || make sure everybody uses the same ||
 || *Google Maps key* || make sure everybody uses the same ||
 
+== API Key ==
+Please read: http://chrislee.kr/wp/2010/12/31/share-google-android-api-key-in-eclipse-with-other-team-members/
+
 == Screens & Menus==
 *NB!* _for Android every *screen* is an *activity*, every activity is a different *class*! These words will be used as synonyms. _
 
