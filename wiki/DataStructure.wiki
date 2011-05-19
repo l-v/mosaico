@@ -1,4 +1,4 @@
-#summary Designin the data structure and java classes.
+#summary Designing the data structure and java classes.
 
 =Photo=
 _saves the info for a single photo._
@@ -10,8 +10,8 @@ public class Photo{
 	private String webUrl;
 	private String fileUrl;
 	
-	private int longitude;
-	private int latitude;
+	private float longitude;
+	private float latitude;
 	
 	private int width;
 	private int height;
@@ -21,6 +21,9 @@ public class Photo{
 	private int ownerId;
 	private String ownerName;
 	private String ownerUrl;
+
+        private Bitmap photo; // The bitmap of the photo.
+
 
 
 	Photo();
@@ -37,6 +40,10 @@ public class Photo{
 	public String getCoord();
 	
 	public String getFileUrl();
+
+        public Bitmap getPhoto(); // Returns the photo // TODO Maybe in a default size?
+
+        public Bitmap getThumb(); // Returns the thumbnail of the photo.
 
 
 }
@@ -56,7 +63,7 @@ public class PhotoSet{
 	
 	public void addPhotoList(LinkedList<Photo> newList);
 	
-	// will get photo list results from panoramio and flikr api
+	// will get photo list results from panoramio and flickr api
 	public void getPhotos();
 	
 
