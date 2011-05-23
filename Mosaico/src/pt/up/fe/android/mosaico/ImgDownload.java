@@ -10,15 +10,17 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 
+/** 
+ * Class that downloads images from an URL through http.
+ */
 public class ImgDownload {
-
-	private final Bitmap img;
 	
 	/** 
 	 * Class that downloads a image file from an URL through http.
 	 * @param URL The URL of the image file to be downloaded.
+	 * @return the Bitmap of the image
 	 */
-	public ImgDownload(String URL){
+	public static Bitmap getImage(String URL){
 		Bitmap tmpBitmap =null;
 		InputStream in = null;        
         try {
@@ -29,24 +31,17 @@ public class ImgDownload {
             // TODO Auto-generated catch block
             e1.printStackTrace();
         }
-        img = tmpBitmap;
-	}
-	/**
-	 * Returns the downloaded bitmap or null if the download was not successful.
-	 * @return
-	 */
-	public Bitmap getImage(){
-		return img;
+        return tmpBitmap;
 	}
 	
 	/**
-     * Returns a thumbnail of the original bitmap.
-     * @param bitmapOrig
-     * @param widthNew
-     * @param heightNew
-     * @return
+     * resizes a Bitmap
+     * @param img Original bitmap
+     * @param widthNew New width
+     * @param heightNew New height
+     * @return resized Bitmap
      */
-    public Bitmap getThumb(int widthNew, int heightNew){
+    public static Bitmap resize(Bitmap img, int widthNew, int heightNew){
     	int widthOrig = img.getWidth();
         int heightOrig = img.getHeight();
         
@@ -69,7 +64,7 @@ public class ImgDownload {
 
     }
     
-    private InputStream OpenHttpConnection(String urlString) 
+    private static InputStream OpenHttpConnection(String urlString) 
     throws IOException
     {
         InputStream in = null;

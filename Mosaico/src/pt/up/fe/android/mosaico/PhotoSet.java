@@ -6,7 +6,7 @@ import java.util.LinkedList;
 
 public class PhotoSet {
 	
-	private LinkedList<Photo> photoList;
+	public LinkedList<Photo> photoList;
 	
 	
 	PhotoSet() {
@@ -19,6 +19,9 @@ public class PhotoSet {
 		photoList.add(newPhoto);
 	}
 	
+	/**
+	 * @deprecated the correct way to add photos to the photoList is using the addPhoto method
+	 */
 	public void addPhotoList(LinkedList<Photo> newList) {
 		
 		for (int i=0; i!=newList.size(); i++) {
