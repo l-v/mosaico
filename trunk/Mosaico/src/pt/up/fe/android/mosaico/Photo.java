@@ -1,6 +1,6 @@
 package pt.up.fe.android.mosaico;
 
-
+import android.graphics.Bitmap;
 
 
 
@@ -11,6 +11,8 @@ public class Photo {
 	private String title;
 	private String webUrl;
 	private String fileUrl;
+	
+	private String thumbUrl; // To be filled so we can get the thumbnails directly
 	
 	private int longitude;
 	private int latitude;
@@ -23,6 +25,8 @@ public class Photo {
 	private int ownerId;
 	private String ownerName;
 	private String ownerUrl;
+	
+	private int site; // 0 is Panoramio; 1 is Flicker;
 	
 	
 	Photo() {
@@ -68,4 +72,23 @@ public class Photo {
 		return fileUrl;
 	}
 	
+	/**
+	 * Fetches a photo directly from the fileUrl;
+	 * @return Bitmap of the fetched photo
+	 */
+	public Bitmap getPhoto(){
+		return ImgDownload.getImage(fileUrl);	
+	}
+	
+	/**
+	 * Fetches the thumbail of a photo.
+	 * If the photo is from panoramio the 60x60 thumbnail is in:
+	 * http://mw2.google.com/mw-panoramio/photos/square/<id>.jpg
+	 * For now I will assume all photos are from panoramio,
+	 * I will change this when we add the flickr api.
+	 * @return
+	 */
+	public Bitmap getThumb(){
+		return ImgDownload.getImage(Globals.PANORAMIO_THUMB_URL + id + ".jpg");		
+	}
 }
