@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android">
+  <item android:icon="@android:drawable/ic_menu_directions" android:title="Path" android:id="@+id/menu_path"></item>
+<item android:title="Favorites" android:icon="@android:drawable/ic_menu_myplaces" android:id="@+id/menu_fav"></item>
+<item android:icon="@android:drawable/ic_menu_recent_history" android:title="History" android:id="@+id/menu_history"></item>
+<item android:id="@+id/menu_gps" android:title="GPS" android:icon="@android:drawable/ic_menu_mylocation"></item>
+<item android:id="@+id/menu_pref" android:icon="@android:drawable/ic_menu_preferences" android:title="Preferences"></item>
+</menu>
