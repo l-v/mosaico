@@ -33,6 +33,8 @@ public class PhotoSet {
 		this.minLongitude = minLongitude;
 		this.maxLatitude = maxLatitude;
 		this.maxLongitude = maxLongitude;
+		
+		photoList = new LinkedList<Photo>();
 	}
 	
 	/**
@@ -91,6 +93,14 @@ public class PhotoSet {
 		
 		// TODO: put in list organized
 		photoList.add(newPhoto);
+	}
+	
+	/**
+	 * Gets the Linked List of photos
+	 * @return LinkedList<Photo>
+	 */
+	public LinkedList<Photo> getList(){
+		return photoList;
 	}
 	
 	/**
