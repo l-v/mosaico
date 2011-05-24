@@ -2,8 +2,6 @@ package pt.up.fe.android.mosaico;
 
 import java.io.*;
 import java.net.*;
-import java.util.LinkedList;
-
 import org.json.*;
 /*
 import org.json.*;
@@ -14,26 +12,38 @@ import net.sf.json.JSONSerializer;
 import android.util.Log;
 
 
-
-
 public class PanoramioAPI {
 
 	private String defaultSize; // size of the image: original, medium, small, thumbnail, square, mini_square
 	private int defaultNumber; // number of images: <=100
 	private String defaultSet; // public (popular photos), full (all photos), userIDnumber
 	private String log = "panoramioLog";
+	private PhotoSet photoList;
 	
-	public PanoramioAPI() {
+	public PanoramioAPI(PhotoSet photoList) {
 		defaultSize = "square";
-		defaultNumber = 20; 
+		defaultNumber = Globals.NUMBER_PHOTOS_TO_GET; 
 		defaultSet = "public";
+		this.photoList = photoList;
+		
+		getPictures(photoList.getMinLatitude(), photoList.getMinLongitude(), photoList.getMaxLatitude(), photoList.getMaxLongitude());
+		
+	}
+	
+	public PanoramioAPI(PhotoSet photoList, int numberPhotos) {
+		defaultSize = "square";
+		defaultNumber = numberPhotos; 
+		defaultSet = "public";
+		this.photoList = photoList;
+		
+		getPictures(photoList.getMinLatitude(), photoList.getMinLongitude(), photoList.getMaxLatitude(), photoList.getMaxLongitude());
+		
 	}
 
 
 	// TODO: put code slightly more readable
-	public LinkedList<Photo> jsonParser(String replyMsg) {
+	public void jsonParser(String replyMsg) {
 
-		LinkedList<Photo> photoList = new LinkedList<Photo>();
 
 		try {
 
@@ -62,8 +72,8 @@ public class PanoramioAPI {
 
 
 				//TODO: verify if float coordinates are needed
-				Integer longitude = Math.round((Float.parseFloat(img.getString("longitude"))));
-				Integer latitude = Math.round(Float.parseFloat(img.getString("latitude")));
+				double longitude = (Double.parseDouble(img.getString("longitude")));
+				double latitude = Double.parseDouble(img.getString("latitude"));
 				
 				int width = Integer.parseInt(img.getString("width"));
 				int height = Integer.parseInt(img.getString("height"));
@@ -78,11 +88,11 @@ public class PanoramioAPI {
 						longitude, latitude, width, height,
 						uploadDate, ownerId, ownerName, ownerUrl);
 
-				photoList.add(newPhoto);
+				photoList.addPhoto(newPhoto);
 			}
 
 			Log.v(log, "left jsonParser cycle");
-			return photoList;
+	
 
 
 
@@ -90,8 +100,6 @@ public class PanoramioAPI {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		return null;
 	}
 
 
@@ -103,13 +111,13 @@ public class PanoramioAPI {
 	 * @param maxLat: maximun latitude
 	 * @return
 	 */
-	public LinkedList<Photo> getPictures(int minLong, int minLat, int maxLong, int maxLat) {
+	public void getPictures(double minLong, double minLat, double maxLong, double maxLat) {
 
-		return getPictures(minLong, minLat, maxLong, maxLat, defaultSize, defaultNumber, defaultSet);
+		this.getPictures(minLong, minLat, maxLong, maxLat, defaultSize, defaultNumber, defaultSet);
 
 	}
 
-	public LinkedList<Photo> getPictures(int minLong, int minLat, int maxLong, int maxLat, String size, int number, String set) {
+	public void getPictures(double minLong, double minLat, double maxLong, double maxLat, String size, int number, String set) {
 
 		
 
@@ -120,7 +128,6 @@ public class PanoramioAPI {
 		"&maxx=" + maxLong + "&maxy=" + maxLat + 
 		"&size=" + size + "&mapfilter=true";
 
-		LinkedList<Photo> results = new LinkedList<Photo>();
 		URL url;
 		
 		try {
@@ -152,7 +159,7 @@ public class PanoramioAPI {
 
 
 			// parse the results
-			results = jsonParser(sb.toString());
+			jsonParser(sb.toString());
 			
 
 			//return sb.toString();
@@ -166,7 +173,6 @@ public class PanoramioAPI {
 			e.printStackTrace();
 		}
 		
-		return results;
 	}
 
 
