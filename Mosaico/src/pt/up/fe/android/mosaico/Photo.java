@@ -3,19 +3,18 @@ package pt.up.fe.android.mosaico;
 import android.graphics.Bitmap;
 
 
-
 public class Photo {
 	
 	// delete all fields not needed later
-	private int id;
+	private int id;	
 	private String title;
 	private String webUrl;
 	private String fileUrl;
-	
+
 	private String thumbUrl; // To be filled so we can get the thumbnails directly
 	
-	private int longitude;
-	private int latitude;
+	private double longitude;
+	private double latitude;
 	
 	private int width;
 	private int height;
@@ -25,16 +24,29 @@ public class Photo {
 	private int ownerId;
 	private String ownerName;
 	private String ownerUrl;
-	
+	/** Distance in km to the current position, to be set by the PhotoSet.addPhoto() method.
+	 */
+	private float distance;
 	private int site; // 0 is Panoramio; 1 is Flicker;
 	
-	
-	Photo() {
-		
-	}
-	
+	/**
+	 * Constructor
+	 * 
+	 * @param imgId
+	 * @param imgTitle
+	 * @param imgWebUrl
+	 * @param imgFileUrl
+	 * @param imgLong
+	 * @param imgLat
+	 * @param imgWidth
+	 * @param imgHeight
+	 * @param imgUpload
+	 * @param imgOwnerId
+	 * @param imgOwnerName
+	 * @param imgOwnerUrl
+	 */
 	Photo (int imgId, String imgTitle, String imgWebUrl, String imgFileUrl, 
-			int imgLong, int imgLat, int imgWidth, int imgHeight,
+			double imgLong, double imgLat, int imgWidth, int imgHeight,
 			String imgUpload, int imgOwnerId, String imgOwnerName, String imgOwnerUrl) {
 		
 		id = imgId;
@@ -64,10 +76,28 @@ public class Photo {
 		return ownerName;
 	}
 	
+	/**
+	 * Distance in km to the current position, to be set by the PhotoSet.addPhoto() method
+	 */
+	public float getDistance(){
+		return distance;
+	}
+	
+	/**
+	 * Distance in km to the current position, to be set by the PhotoSet.addPhoto() method
+	 */
+	public void setDistance(float distance){
+		this.distance = distance;
+	}
+	
 	public String getCoord() {
 		return "lat: " + latitude + "; long: " + longitude;
 	}
 	
+	/**
+	 * @deprecated not needed, use getPhoto or getThumb
+	 *
+	 */
 	public String getFileUrl() {
 		return fileUrl;
 	}
