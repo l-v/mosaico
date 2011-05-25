@@ -3,18 +3,21 @@ package pt.up.fe.android.mosaico;
 import java.util.LinkedList;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainScreen extends Activity {
     /** Called when the activity is first created. */
@@ -36,8 +39,34 @@ public class MainScreen extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
-        return true;
+        return (super.onPrepareOptionsMenu(menu));
     }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+        case R.id.menu_path:
+        	Toast.makeText(this, "Path here!", Toast.LENGTH_LONG).show();
+            return true;
+        case R.id.menu_fav:
+        	Toast.makeText(this, "Favorites Here!", Toast.LENGTH_LONG).show(); 
+            return true;
+        case R.id.menu_history:
+        	Toast.makeText(this, "History here!", Toast.LENGTH_LONG).show();
+            return true;
+        case R.id.menu_gps:
+        	Toast.makeText(this, "GPSSSS!!!", Toast.LENGTH_LONG).show();
+            return true;
+        case R.id.menu_pref:
+        	Toast.makeText(this, "Preferences here!", Toast.LENGTH_LONG).show();
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }
+    
+    
     public class ImageAdapter extends BaseAdapter {
         private Context mContext;
 
