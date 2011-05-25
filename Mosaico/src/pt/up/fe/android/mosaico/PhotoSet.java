@@ -122,4 +122,5 @@ public class PhotoSet {
 		//addPhotoList(panoramio.getPictures(-180, -90, 180, 90));
 	}
 	
+
 }
