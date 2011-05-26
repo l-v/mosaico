@@ -5,6 +5,9 @@ import java.util.LinkedList;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,12 +27,16 @@ public class MainScreen extends Activity {
 	PhotoSet myPhotos;
 	PanoramioAPI processPhotos;
 	
+	private double currentLatitude;
+	private double currentLongitude;
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
         //myPhotos = new PhotoSet(dummyLat, dummyLong, dummyLat, dummyLong, maxLat, maxLong); 
+
         myPhotos = new PhotoSet(0, 0, 41.312054, -8.791136, 41.424460, -8.661385);
         processPhotos = new PanoramioAPI(myPhotos);
         GridView gridview = (GridView) findViewById(R.id.gridview);
@@ -56,8 +63,13 @@ public class MainScreen extends Activity {
         	Toast.makeText(this, "History here!", Toast.LENGTH_LONG).show();
             return true;
         case R.id.menu_gps:
-        	Toast.makeText(this, "GPSSSS!!!", Toast.LENGTH_LONG).show();
             return true;
+        case R.id.gps_current:
+        	getMyLocation();	// fill in the coordinates
+        	return true;
+        case R.id.gps_another:
+        	
+        	return true;
         case R.id.menu_pref:
         	Toast.makeText(this, "Preferences here!", Toast.LENGTH_LONG).show();
             return true;
@@ -65,9 +77,35 @@ public class MainScreen extends Activity {
             return super.onOptionsItemSelected(item);
         }
     }
-    
-    
-    public class ImageAdapter extends BaseAdapter {
+    /**
+     * Fill in the location coordinates
+     */
+    private void getMyLocation() {
+    	
+    	ProgressDialog pd = ProgressDialog.show(this, "Working..", "Finding your position...");
+    	LocationManager locationManager;
+        String context = Context.LOCATION_SERVICE;
+        locationManager = (LocationManager)getSystemService(context);
+
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+        criteria.setAltitudeRequired(false);
+        criteria.setBearingRequired(false);
+        criteria.setCostAllowed(true);
+        criteria.setPowerRequirement(Criteria.POWER_LOW);
+
+        String provider = locationManager.getBestProvider(criteria, true);
+        Location location = locationManager.getLastKnownLocation(provider);
+        
+        this.currentLatitude = location.getLatitude();
+        this.currentLongitude = location.getLongitude();
+		
+        Toast.makeText(this, currentLatitude + " : " + currentLongitude, Toast.LENGTH_LONG).show();
+        pd.dismiss();
+	}
+
+
+	public class ImageAdapter extends BaseAdapter {
         private Context mContext;
 
         //File photogrid = new File("/sdcard/PhotoGrid");
