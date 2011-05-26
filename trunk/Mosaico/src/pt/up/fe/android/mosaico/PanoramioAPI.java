@@ -23,7 +23,7 @@ public class PanoramioAPI {
 	public PanoramioAPI(PhotoSet photoList) {
 		defaultSize = "square";
 		defaultNumber = Globals.NUMBER_PHOTOS_TO_GET; 
-		defaultSet = "public";
+		defaultSet = "full";
 		this.photoList = photoList;
 		
 		getPictures(photoList.getMinLatitude(), photoList.getMinLongitude(), photoList.getMaxLatitude(), photoList.getMaxLongitude());
@@ -111,13 +111,13 @@ public class PanoramioAPI {
 	 * @param maxLat: maximun latitude
 	 * @return
 	 */
-	public void getPictures(double minLong, double minLat, double maxLong, double maxLat) {
+	public void getPictures(double minLat, double minLong, double maxLat, double maxLong) {
 
-		this.getPictures(minLong, minLat, maxLong, maxLat, defaultSize, defaultNumber, defaultSet);
+		this.getPictures(minLat, minLong, maxLat, maxLong, defaultSize, defaultNumber, defaultSet);
 
 	}
 
-	public void getPictures(double minLong, double minLat, double maxLong, double maxLat, String size, int number, String set) {
+	public void getPictures(double minLat, double minLong, double maxLat, double maxLong, String size, int number, String set) {
 
 		
 
@@ -129,6 +129,8 @@ public class PanoramioAPI {
 		"&size=" + size + "&mapfilter=true";
 
 		URL url;
+
+		Log.d("PanoramioAPI", "URL sent: "+ urlString);
 		
 		try {
 			url = new URL(urlString);
