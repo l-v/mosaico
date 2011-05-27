@@ -21,7 +21,7 @@ public class PanoramioAPI {
 	private PhotoSet photoList;
 	
 	public PanoramioAPI(PhotoSet photoList) {
-		defaultSize = "square";
+		defaultSize = "medium";
 		defaultNumber = Globals.NUMBER_PHOTOS_TO_GET; 
 		defaultSet = "full";
 		this.photoList = photoList;
