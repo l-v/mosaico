@@ -3,6 +3,8 @@ package pt.up.fe.android.mosaico;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import android.util.Log;
+
 
 /**
  * Stores a LinkedList of Photos and also the current location
@@ -37,6 +39,43 @@ public class PhotoSet {
 		
 		photoList = new ArrayList<Photo>();
 	}
+	
+	
+	public PhotoSet(double currentLatitude, double currentLongitude, double maxDistance){
+		this.currentLatitude = currentLatitude;
+		this.currentLongitude = currentLongitude;
+		
+		double latitudeDelta = maxDistance * (360.0/40075.0);
+		if(currentLatitude < 0 ){
+			this.minLatitude = currentLatitude +latitudeDelta;
+			this.maxLatitude = currentLatitude - latitudeDelta;
+		}
+		else {
+			this.minLatitude = currentLatitude - latitudeDelta;
+			this.maxLatitude = currentLatitude + latitudeDelta;
+		}
+
+		
+		// TODO fazer if;
+		double longitudeDelta = maxDistance * (360.0/(Math.cos(currentLatitude)*40075.0));
+		
+		if(currentLongitude < 0){
+			this.minLongitude = currentLongitude + longitudeDelta;
+			this.maxLongitude = currentLongitude - longitudeDelta;
+		}
+		else{
+			this.minLongitude = currentLongitude - longitudeDelta;
+			this.maxLongitude = currentLongitude + longitudeDelta;
+		}
+			
+		
+	
+		photoList = new ArrayList<Photo>();
+		
+		Log.d("COORDINATES", "minLatitude:" + minLatitude + "minLongitude:" + minLongitude +"maxLatitude:" + maxLatitude +"maxLongitude:" + maxLongitude);
+	}
+	
+	
 	
 	/**
 	 * Returns current latitude
