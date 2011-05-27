@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -18,11 +19,32 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+class popPic extends Dialog {
+	/**
+	* @param context
+	*/
+	Photo data;
+	public popPic(Context context, Photo data) {
+		super(context);
+		this.data = data;
+	}
+	
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.windowpic);
+		ImageView imageView = (ImageView) findViewById(R.id.fullimage);
+		imageView.setImageBitmap(data.getPhoto());		
+		}
+
+}
 
 public class MainScreen extends Activity {
     /** Called when the activity is first created. */
@@ -45,7 +67,17 @@ public class MainScreen extends Activity {
         
         processPhotos = new PanoramioAPI(myPhotos);
         GridView gridview = (GridView) findViewById(R.id.gridview);
-        gridview.setAdapter(new ImageAdapter(this));
+        gridview.setAdapter(new ImageAdapter(this, myPhotos));
+        gridview.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				ImageAdapter ad = (ImageAdapter) arg0.getAdapter();
+				popPic dialog = new popPic(arg1.getContext(), ad.getItem(arg2));
+				dialog.show();
+				
+			}});
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -53,6 +85,7 @@ public class MainScreen extends Activity {
         inflater.inflate(R.menu.menu, menu);
         return (super.onPrepareOptionsMenu(menu));
     }
+    
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -112,50 +145,28 @@ public class MainScreen extends Activity {
 
 	public class ImageAdapter extends BaseAdapter {
         private Context mContext;
+        ArrayList<Photo> pics;    
+        
 
-        //File photogrid = new File("/sdcard/PhotoGrid");
-        //File[] thumbs = photogrid.listFiles();
-        ArrayList<Photo> pics = myPhotos.getList();
-
-        public ImageAdapter(Context c) {
+        public ImageAdapter(Context c, PhotoSet data) {
             mContext = c;
+            pics = data.getList();
         }
 
         public int getCount() {
-            //return thumbs.length;
-        	System.out.println("Size of vector: " + pics.size());
         	return pics.size();
         }
 
-        public Object getItem(int position) {
-            return null;
+        public Photo getItem(int position) {
+            return pics.get(position);
         }
 
         public long getItemId(int position) {
             return 0;
         }
+        
+        
 
-        // create a new ImageView for each item referenced by the Adapter
-        /*public View getView(int position, View convertView, ViewGroup parent) {
-            ImageView imageView;
-            TextView distance;
-            if (convertView == null) {  // if it's not recycled, initialize some attributes
-                imageView = new ImageView(mContext);
-                distance = new TextView(mContext);
-                //imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
-                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                imageView.setPadding(8, 8, 8, 8);
-            } else {
-                imageView = (ImageView) convertView;
-                distance = (TextView) convertView;
-            }
-
-            Uri imgUri=Uri.fromFile(thumbs[position]);
-            imageView.setImageURI(imgUri);
-            
-            distance.setText("12343");
-            return imageView;
-        }*/
         public View getView(final int position, View convertView, ViewGroup parent) {
         	
         	if(convertView == null) { // recycled view is null so create it.
@@ -169,11 +180,7 @@ public class MainScreen extends Activity {
            imageView.setPadding(8, 8, 8, 8); 
            
            textView.setPadding(8, 0, 0, 0);
-       
-           
-           //Uri imgUri=Uri.fromFile(thumbs[position]);
-           //imageView.setImageURI(imgUri);
-           
+                 
            new Thread(new Runnable() {
         	    public void run() {
         	      final Bitmap b = pics.get(position).getThumb();
