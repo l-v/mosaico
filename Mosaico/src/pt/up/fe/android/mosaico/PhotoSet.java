@@ -1,5 +1,6 @@
 package pt.up.fe.android.mosaico;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 
@@ -8,7 +9,7 @@ import java.util.LinkedList;
  */
 public class PhotoSet {
 	
-	private LinkedList<Photo> photoList;
+	private ArrayList<Photo> photoList;
 
 	private double currentLatitude;
 	private double currentLongitude;
@@ -34,7 +35,7 @@ public class PhotoSet {
 		this.maxLatitude = maxLatitude;
 		this.maxLongitude = maxLongitude;
 		
-		photoList = new LinkedList<Photo>();
+		photoList = new ArrayList<Photo>();
 	}
 	
 	/**
@@ -97,9 +98,9 @@ public class PhotoSet {
 	
 	/**
 	 * Gets the Linked List of photos
-	 * @return LinkedList<Photo>
+	 * @return ArrayList<Photo>
 	 */
-	public LinkedList<Photo> getList(){
+	public ArrayList<Photo> getList(){
 		return photoList;
 	}
 	

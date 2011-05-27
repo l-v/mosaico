@@ -29,6 +29,7 @@ public class Photo {
 	private float distance;
 	private int site; // 0 is Panoramio; 1 is Flicker;
 	
+	Bitmap thumbnail;
 	/**
 	 * Constructor
 	 * 
@@ -65,6 +66,8 @@ public class Photo {
 		ownerId = imgOwnerId;
 		ownerName = imgOwnerName;
 		ownerUrl = imgOwnerUrl;
+		
+		thumbnail = null;
 		
 	}
 	
@@ -107,7 +110,7 @@ public class Photo {
 	 * @return Bitmap of the fetched photo
 	 */
 	public Bitmap getPhoto(){
-		return ImgDownload.getImage(fileUrl);	
+		return ImgDownload.getImage(fileUrl);
 	}
 	
 	/**
@@ -119,6 +122,9 @@ public class Photo {
 	 * @return
 	 */
 	public Bitmap getThumb(){
-		return ImgDownload.getImage(Globals.PANORAMIO_THUMB_URL + id + ".jpg");		
+		if (thumbnail == null)
+			thumbnail = ImgDownload.getImage(Globals.PANORAMIO_THUMB_URL + id + ".jpg");
+		
+		return thumbnail;
 	}
 }
