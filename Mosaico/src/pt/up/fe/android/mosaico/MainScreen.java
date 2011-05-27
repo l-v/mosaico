@@ -38,7 +38,11 @@ public class MainScreen extends Activity {
         setContentView(R.layout.main);
 
         //myPhotos = new PhotoSet(dummyLat, dummyLong, dummyLat, dummyLong, maxLat, maxLong); 
-        myPhotos = new PhotoSet(0, 0, 41.365968,  -8.780026,  41.383263, -8.764563);
+        //myPhotos = new PhotoSet(0, 0, 41.365968,  -8.780026,  41.383263, -8.764563);
+        
+        getMyLocation();
+        myPhotos = new PhotoSet(currentLatitude, currentLongitude, 3);
+        
         processPhotos = new PanoramioAPI(myPhotos);
         GridView gridview = (GridView) findViewById(R.id.gridview);
         gridview.setAdapter(new ImageAdapter(this));
