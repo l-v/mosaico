@@ -1,63 +1,31 @@
 package pt.up.fe.android.mosaico;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
 import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-class popPic extends Dialog {
-	/**
-	 * @param context
-	 */
-	Photo data;
-
-	public popPic(Context context, Photo data) {
-		super(context);
-		this.data = data;
-	}
-
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.windowpic);
-		ImageView imageView = (ImageView) findViewById(R.id.fullimage);
-		imageView.setImageBitmap(data.getPhoto());
-	}
-
-}
 
 public class MainScreen extends Activity {
 	/** Called when the activity is first created. */
 	PhotoSet myPhotos;
 	PanoramioAPI processPhotos;
-	
-	/** Defines the format for the distance. */
-	DecimalFormat distanceFormat = new DecimalFormat("#0.0 Km");
 
 	private double currentLatitude = 9999;
 	private double currentLongitude = 9999;
@@ -270,61 +238,5 @@ public class MainScreen extends Activity {
 	    }
 	}
 
-	public class ImageAdapter extends BaseAdapter {
-		private Context mContext;
-		ArrayList<Photo> pics;
-
-		public ImageAdapter(Context c, PhotoSet data) {
-			mContext = c;
-			pics = data.getList();
-		}
-
-		public int getCount() {
-			return pics.size();
-		}
-
-		public Photo getItem(int position) {
-			return pics.get(position);
-		}
-
-		public long getItemId(int position) {
-			return 0;
-		}
-
-		public View getView(final int position, View convertView,
-				ViewGroup parent) {
-
-			if (convertView == null) { // recycled view is null so create it.
-				LayoutInflater inflater = (LayoutInflater) mContext
-						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				convertView = inflater.inflate(R.layout.gridelement, parent,
-						false);
-			}
-			final ImageView imageView = (ImageView) convertView
-					.findViewById(R.id.thumbimg);
-			TextView textView = (TextView) convertView
-					.findViewById(R.id.thumbdist);
-
-			imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-			imageView.setPadding(8, 8, 8, 8);
-
-			textView.setPadding(8, 0, 0, 0);
-
-			new Thread(new Runnable() {
-				public void run() {
-					final Bitmap b = pics.get(position).getThumb();
-					imageView.post(new Runnable() {
-						public void run() {
-							imageView.setImageBitmap(b);
-						}
-					});
-				}
-			}).start();
-
-			// imageView.setImageBitmap(pics.get(position).getThumb());
-
-			textView.setText(distanceFormat.format( pics.get(position).getDistance() ));
-			return convertView;
-		}
-	}
+	
 }
