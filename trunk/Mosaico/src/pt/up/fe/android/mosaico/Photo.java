@@ -14,6 +14,8 @@ public class Photo {
 	private String thumbUrl; // To be filled so we can get the thumbnails directly
 	
 	private double longitude;
+
+
 	private double latitude;
 	
 	private int width;
@@ -126,5 +128,13 @@ public class Photo {
 			thumbnail = ImgDownload.getImage(Globals.PANORAMIO_THUMB_URL + id + ".jpg");
 		
 		return thumbnail;
+	}
+	
+	public double getLongitude() {
+		return longitude;
+	}
+
+	public double getLatitude() {
+		return latitude;
 	}
 }
