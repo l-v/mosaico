@@ -20,6 +20,8 @@ public class PhotoSet {
 	private double maxLatitude;
 	private double maxLongitude;
 	
+	private GeoLocation currentLocation;
+	
 	/**
 	 * Constructor
 	 * @param currentLatitude current GPS position
@@ -37,42 +39,30 @@ public class PhotoSet {
 		this.maxLatitude = maxLatitude;
 		this.maxLongitude = maxLongitude;
 		
+		this.currentLocation = currentLocation = GeoLocation.fromDegrees(currentLatitude, currentLongitude);
+		
 		photoList = new ArrayList<Photo>();
 	}
 	
 	
 	public PhotoSet(double currentLatitude, double currentLongitude, double maxDistance){
+		photoList = new ArrayList<Photo>();
+		
 		this.currentLatitude = currentLatitude;
 		this.currentLongitude = currentLongitude;
 		
-		double latitudeDelta = maxDistance * (360.0/40075.0);
-		if(currentLatitude < 0 ){
-			this.minLatitude = currentLatitude +latitudeDelta;
-			this.maxLatitude = currentLatitude - latitudeDelta;
-		}
-		else {
-			this.minLatitude = currentLatitude - latitudeDelta;
-			this.maxLatitude = currentLatitude + latitudeDelta;
-		}
-
+		currentLocation = GeoLocation.fromDegrees(currentLatitude, currentLongitude);
 		
-		// TODO fazer if;
-		double longitudeDelta = maxDistance * (360.0/(Math.cos(currentLatitude)*40075.0));
+		GeoLocation[] boundingBox = currentLocation.boundingCoordinates(maxDistance, Globals.EARTH_RADIUS);
 		
-		if(currentLongitude < 0){
-			this.minLongitude = currentLongitude + longitudeDelta;
-			this.maxLongitude = currentLongitude - longitudeDelta;
-		}
-		else{
-			this.minLongitude = currentLongitude - longitudeDelta;
-			this.maxLongitude = currentLongitude + longitudeDelta;
-		}
-			
+		this.minLatitude = boundingBox[0].getLatitudeInDegrees();
+		this.minLongitude = boundingBox[0].getLongitudeInDegrees();
 		
-	
-		photoList = new ArrayList<Photo>();
+		this.maxLatitude = boundingBox[1].getLatitudeInDegrees();
+		this.maxLongitude = boundingBox[1].getLongitudeInDegrees();
 		
-		Log.d("COORDINATES", "minLatitude:" + minLatitude + "minLongitude:" + minLongitude +"maxLatitude:" + maxLatitude +"maxLongitude:" + maxLongitude);
+		
+		Log.d("COORDINATES", "minLatitude: " + minLatitude + " , minLongitude: " + minLongitude +" , maxLatitude: " + maxLatitude +" , maxLongitude: " + maxLongitude);
 	}
 	
 	
@@ -132,7 +122,13 @@ public class PhotoSet {
 	public void addPhoto(Photo newPhoto) {
 		
 		// TODO: put in list organized
+		GeoLocation photoLocation = GeoLocation.fromDegrees(newPhoto.getLatitude(), newPhoto.getLongitude());
+		
+		newPhoto.setDistance( (float) photoLocation.distanceTo(currentLocation, Globals.EARTH_RADIUS));
+		
 		photoList.add(newPhoto);
+		
+		
 	}
 	
 	/**
@@ -162,5 +158,4 @@ public class PhotoSet {
 		//addPhotoList(panoramio.getPictures(-180, -90, 180, 90));
 	}
 	
-
 }
