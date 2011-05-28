@@ -1,5 +1,6 @@
 package pt.up.fe.android.mosaico;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import android.app.Activity;
@@ -54,6 +55,9 @@ public class MainScreen extends Activity {
 	/** Called when the activity is first created. */
 	PhotoSet myPhotos;
 	PanoramioAPI processPhotos;
+	
+	/** Defines the format for the distance. */
+	DecimalFormat distanceFormat = new DecimalFormat("#0.0 Km");
 
 	private double currentLatitude = 9999;
 	private double currentLongitude = 9999;
@@ -302,7 +306,7 @@ public class MainScreen extends Activity {
 
 			// imageView.setImageBitmap(pics.get(position).getThumb());
 
-			textView.setText(pics.get(position).getTitle());
+			textView.setText(distanceFormat.format( pics.get(position).getDistance() ));
 			return convertView;
 		}
 	}
