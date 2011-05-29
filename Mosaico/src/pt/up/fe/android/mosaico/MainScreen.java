@@ -31,7 +31,6 @@ public class MainScreen extends Activity {
 	
 	private Location currentLocation;
 	LocationManager lm;
-	String provider;
 	LocationListener ll;
 	int gps = 0;
 	
@@ -42,36 +41,44 @@ public class MainScreen extends Activity {
 
 		gridview = (GridView) findViewById(R.id.gridview);
 
-		/*  instantiate some stuff for the GPS */
-		lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		ll = new MyLocationListener();  // create the location listener
 	}
 	
 	@Override
 	public void onStart() {
 		super.onStart();
+		/*  instantiate some stuff for the location */
+		lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		ll = new MyLocationListener();  // create the location listener
+		currentLocation = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		if (currentLocation == null)
+		{
+			getFreshLocation();
+		}
+		else { 
+			retrievePhotos();  // if there is last known location
+		}
 	}
 	
 	@Override	
     public void onResume() { 
         super.onResume();
-        // on resume and on first startup - get the last know location
-        //provider = lm.getBestProvider(new Criteria(), true);
-		currentLocation = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+	}
+	@Override
+	protected void onPause()
+	{
+		super.onPause();
+		//lm.removeUpdates(ll);
 		
-		if (currentLocation == null) // if the location cannot be retrieved then get a fresh location
-			getFreshLocation();
-		else 
-			retrievePhotos();
 	}
 	/**
 	 * retrieve a new location place
 	 */
 	public void getFreshLocation()
 	{
-	    // get location updates from the current GPS Provider, every 2sec
+	    // get location updates from the current GPS Provider, every 1sec
 	    // and notify if location changed within 100m
-	    lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000L, 100.0f, ll);
+	    lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000L, 100.0f, ll);
 	    
 	    // Create a ProgressDialog to let the User know that we're waiting for a GPS Fix
 	    Runnable showWaitDialog = new Runnable () { 
@@ -81,12 +88,12 @@ public class MainScreen extends Activity {
 	    		{}
 	    		// After receiving first GPS Fix dismiss the Progress Dialog
 	    		pd.dismiss();
-	    		//retrievePhotos();
+	    		retrievePhotos();
 	    	};
 	    };
 	    pd = ProgressDialog.show(this, "Working... ", "Getting current location...", true);
 	    Thread t = new Thread(showWaitDialog); // start the thread
-	    t.start();
+	    t.start(); 
 	}
 		
 	public void retrievePhotos()
@@ -110,6 +117,7 @@ public class MainScreen extends Activity {
 		else 
 		{
 			Toast.makeText(this, "problem with loading grid", Toast.LENGTH_LONG).show();
+			getFreshLocation();
 		}
 	}
 	
@@ -164,6 +172,7 @@ public class MainScreen extends Activity {
 			if (location != null) {
 				currentLocation = location;
 				retrievePhotos();
+				lm.removeUpdates(this);
 				// log the changes
 				Log.d("LOCATION CHANGED", location.getLatitude() + "");
 				Log.d("LOCATION CHANGED", location.getLongitude() + "");
@@ -178,8 +187,8 @@ public class MainScreen extends Activity {
 	    public void onProviderDisabled(String provider) {
 	    	// create the alert that will ask the user to go back or change the GPS settings
 			AlertDialog.Builder builder = new AlertDialog.Builder(MainScreen.this);
-	    	builder.setMessage("Mosaico needs to use the GPS! Will you allow it?")
-	    	.setCancelable(false).setPositiveButton("Settings", new DialogInterface.OnClickListener() {
+	    	builder.setMessage(R.string.gps_disabled_question)
+	    	.setCancelable(false).setPositiveButton(R.string.gps_disabled_answer_yes, new DialogInterface.OnClickListener() {
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
@@ -187,7 +196,7 @@ public class MainScreen extends Activity {
 					startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS), 0);
 				}
 			})
-			.setNegativeButton("No", new DialogInterface.OnClickListener() {
+			.setNegativeButton(R.string.gps_disabled_answer_no, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					MainScreen.this.finish(); // exit the application 
@@ -205,6 +214,4 @@ public class MainScreen extends Activity {
 	    public void onStatusChanged(String provider, int status, Bundle extras) {
 	    }
 	}
-
-	
 }
