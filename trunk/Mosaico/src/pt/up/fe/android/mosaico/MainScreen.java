@@ -1,17 +1,11 @@
 package pt.up.fe.android.mosaico;
 
+import pt.up.fe.android.mosaico.MyLocation.LocationResult;
+
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,35 +21,35 @@ public class MainScreen extends Activity {
 	PhotoSet myPhotos;
 	PanoramioAPI processPhotos;
 	private GridView gridview;
-	private ProgressDialog pd;
 	
 	private Location currentLocation;
-	LocationManager lm;
-	LocationListener ll;
-	int gps = 0;
+	MyLocation myLocation = new MyLocation();
+
+	// implementation of the abstarct class, what to do when gotLocation
+	public LocationResult locationResult = new LocationResult() {
+	    @Override
+	    public void gotLocation(final Location location) {
+	        //Got the location!
+	    	currentLocation = location;
+	    	retrievePhotos();
+	    };
+	};
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-
 		gridview = (GridView) findViewById(R.id.gridview);
-
 	}
 	
 	@Override
 	public void onStart() {
 		super.onStart();
 		/*  instantiate some stuff for the location */
-		lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		ll = new MyLocationListener();  // create the location listener
-		currentLocation = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-		if (currentLocation == null)
+		boolean gotLoc = myLocation.getLocation(this, locationResult);
+		if(!gotLoc)
 		{
-			getFreshLocation();
-		}
-		else { 
-			retrievePhotos();  // if there is last known location
+			Toast.makeText(this, "no location", Toast.LENGTH_LONG).show();
 		}
 	}
 	
@@ -68,32 +62,6 @@ public class MainScreen extends Activity {
 	protected void onPause()
 	{
 		super.onPause();
-		//lm.removeUpdates(ll);
-		
-	}
-	/**
-	 * retrieve a new location place
-	 */
-	public void getFreshLocation()
-	{
-	    // get location updates from the current GPS Provider, every 1sec
-	    // and notify if location changed within 100m
-	    lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000L, 100.0f, ll);
-	    
-	    // Create a ProgressDialog to let the User know that we're waiting for a GPS Fix
-	    Runnable showWaitDialog = new Runnable () { 
-	    	@Override
-	    	public void run() {
-	    		while ( currentLocation == null) // wait for the GPS fix
-	    		{}
-	    		// After receiving first GPS Fix dismiss the Progress Dialog
-	    		pd.dismiss();
-	    		retrievePhotos();
-	    	};
-	    };
-	    pd = ProgressDialog.show(this, "Working... ", "Getting current location...", true);
-	    Thread t = new Thread(showWaitDialog); // start the thread
-	    t.start(); 
 	}
 		
 	public void retrievePhotos()
@@ -117,7 +85,6 @@ public class MainScreen extends Activity {
 		else 
 		{
 			Toast.makeText(this, "problem with loading grid", Toast.LENGTH_LONG).show();
-			getFreshLocation();
 		}
 	}
 	
@@ -148,12 +115,13 @@ public class MainScreen extends Activity {
 		case R.id.menu_gps:
 			return true;
 			case R.id.gps_current:
-				getFreshLocation(); // get a new location from the gps device
+				myLocation.getLocation(this, locationResult); // get a new location from the gps device
 				return true;
 			case R.id.gps_another:
-				Intent intent = new Intent(); // create a new intent for the gmaps view
-				intent.setClass(this, GoogleMapsView.class);
-				startActivity(intent); // TODO: fix the error that gives when the activity is started (Map Activity)
+				// create a new intent for the gmaps view
+				Intent intent = new Intent(MainScreen.this, GoogleMapsView.class);
+				//intent.setClassName("pt.up.fe.android.mosaico","pt.up.fe.android.mosaico.GoogleMapsView");
+				MainScreen.this.startActivity(intent); // TODO: fix the error that gives when the activity is started (Map Activity)
 				return true;
 		case R.id.menu_pref:
 			Toast.makeText(this, "Preferences here!", Toast.LENGTH_LONG).show();
@@ -164,15 +132,15 @@ public class MainScreen extends Activity {
 	}
 	
 	/** location Listener for the GPS **/
-	private class MyLocationListener implements LocationListener {
+/*	private class MyLocationListener implements LocationListener {
 		
-		/* when the location is changed update the photos */
+		/// when the location is changed update the photos 
 		@Override
 		public void onLocationChanged(Location location) {
 			if (location != null) {
 				currentLocation = location;
 				retrievePhotos();
-				lm.removeUpdates(this);
+				lm.removeUpdates(ll);
 				// log the changes
 				Log.d("LOCATION CHANGED", location.getLatitude() + "");
 				Log.d("LOCATION CHANGED", location.getLongitude() + "");
@@ -213,5 +181,5 @@ public class MainScreen extends Activity {
 	    @Override
 	    public void onStatusChanged(String provider, int status, Bundle extras) {
 	    }
-	}
+	} */
 }

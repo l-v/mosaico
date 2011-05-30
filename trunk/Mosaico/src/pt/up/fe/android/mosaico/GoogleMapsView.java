@@ -18,7 +18,8 @@ public class GoogleMapsView extends MapActivity {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.gmaps); 
 	    
-	    MapView mapView = (MapView) findViewById(R.id.mapview);
+	    //MapView mapView = (MapView) findViewById(R.id.mapview);
+	    MapView mapView = new MapView(this, "0cYXzPpWBPrvWY7kbfaQLfPd1drfAVJLdI0dYoA");
 	    mapView.setBuiltInZoomControls(true);
 	    
 	    List<Overlay> mapOverlays = mapView.getOverlays();
