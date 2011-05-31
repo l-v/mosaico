@@ -1,5 +1,6 @@
 package pt.up.fe.android.mosaico;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -24,8 +25,15 @@ public class ImgDownload {
 		Bitmap tmpBitmap =null;
 		InputStream in = null;        
         try {
-            in = OpenHttpConnection(URL);
-            tmpBitmap = BitmapFactory.decodeStream(in);
+            /*
+             * Sometimes the pics don't show up with this in the log:
+             * 05-31 16:19:19.877: DEBUG/skia(24187): --- decoder->decode returned false
+             * I'm making this retry until it gets the bitmap.
+             */
+        	do{
+	            in = OpenHttpConnection(URL);
+	            tmpBitmap = BitmapFactory.decodeStream(in);
+        	}while(tmpBitmap == null);
             in.close();
         } catch (IOException e1) {
             // TODO Auto-generated catch block

@@ -41,15 +41,24 @@ public class MainScreen extends Activity {
 
 		gridview = (GridView) findViewById(R.id.gridview);
 		
-		// myPhotos = new PhotoSet(dummyLat, dummyLong, dummyLat, dummyLong,
-		// maxLat, maxLong);
-		// myPhotos = new PhotoSet(0, 0, 41.365968, -8.780026, 41.383263,
-		// -8.764563);
-		//this.currentLatitude = 42.0;
-		//this.currentLongitude = -8.0;
+		this.currentLatitude = 41.383263;
+		this.currentLongitude = -8.780026;
+		
+		myPhotos = new PhotoSet(currentLatitude, currentLongitude, 3);
+		
+		processPhotos = new PanoramioAPI(myPhotos);
+		gridview.setAdapter(new ImageAdapter(this, myPhotos));
+		gridview.setOnItemClickListener(new OnItemClickListener() {
 
-		getLastGoodLocation();
-		retrievePhotos();
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				ImageAdapter ad = (ImageAdapter) arg0.getAdapter();
+				popPic dialog = new popPic(arg1.getContext(), ad.getItem(arg2));
+				dialog.show();
+			}
+		});
+
 	}
 	
 	public void retrievePhotos()
