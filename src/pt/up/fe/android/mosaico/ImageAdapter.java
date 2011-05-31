@@ -49,7 +49,7 @@ public class ImageAdapter extends BaseAdapter {
 				.findViewById(R.id.thumbimg);
 		TextView textView = (TextView) convertView
 				.findViewById(R.id.thumbdist);
-
+		
 		imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 		imageView.setPadding(8, 8, 8, 8);
 
