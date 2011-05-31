@@ -24,6 +24,12 @@ class popPic extends Dialog{
 		setContentView(R.layout.windowpic);
 		ImageView imageView = (ImageView) findViewById(R.id.fullimage);
 		imageView.setImageBitmap(data.getPhoto());
+		imageView.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				dismiss();				
+			}});
 		
 	}
 	public void enddialog() {
