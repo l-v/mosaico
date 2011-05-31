@@ -1,3 +1,8 @@
+
+===Documentation===
+http://status.net/docs/api/statusesupdate.html
+
+===Example===
 Example of a POST to http://denti.ca using curl.
 
 {{{
