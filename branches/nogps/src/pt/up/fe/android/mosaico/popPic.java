@@ -89,10 +89,16 @@ class popPic extends Dialog{
 
 			@Override
 			public void onClick(final View v) {
-				Intent intent = new Intent(android.content.Intent.ACTION_VIEW, 
-						Uri.parse("geo:0,0?q="+data.getLatitude()+","+data.getLongitude()+" (" + data.getTitle() + ")"));
-//				Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-//						Uri.parse("google.navigation:q=an+address+city");
+				/*
+				 * We can use google maps with a marker
+				 */
+//				Intent intent = new Intent(android.content.Intent.ACTION_VIEW, 
+//						Uri.parse("geo:0,0?q="+data.getLatitude()+","+data.getLongitude()+" (" + data.getTitle() + ")"));
+				/*
+				 * Or call directly google navigation.
+				 */
+				Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+						Uri.parse("google.navigation:q=" + data.getLatitude()+","+data.getLongitude() ));
 						v.getContext().startActivity(intent);
 			}
 		});
