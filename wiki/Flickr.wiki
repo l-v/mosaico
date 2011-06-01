@@ -3,6 +3,11 @@
 =Get photos for a location=
 http://www.flickr.com/services/api/flickr.photos.search.html
 
+==Example==
+http://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=4a0e553ddd58e3428eaef8f7a7edc899&min_taken_date=20100101&has_geo=1&lat=41.383263&lon=-8.780026&radius=10&extras=geo%2C+url_m%2C+url_sq&format=rest&api_sig=048215caf95438f902ee8915002b809c
+
+This gives us almost everything we need. Check the *extras* options.
+
 ==Please note that they limit the output:==
 
  Geo queries require some sort of limiting agent in order to prevent the database from crying. This is basically like the check against "parameterless searches" for queries without a geo component. 
