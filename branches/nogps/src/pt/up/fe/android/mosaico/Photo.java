@@ -73,6 +73,14 @@ public class Photo {
 		
 	}
 	
+	/**
+	 * Returns the URL to the full website of the photo.
+	 * @return webURL
+	 */
+	public String getWebUrl() {
+		return webUrl;
+	}
+
 	public String getTitle() {
 		return title;
 	}
