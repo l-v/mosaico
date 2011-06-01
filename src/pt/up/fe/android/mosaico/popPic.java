@@ -36,7 +36,7 @@ class popPic extends Dialog{
 			@Override
 			public void onClick(final View v) {
 
-				final IdenticaAPI identica = new IdenticaAPI("mosaico", "m23e43");
+				final IdenticaAPI identica = new IdenticaAPI(Globals.identicaUsername, Globals.identicaPassword);
 				
 				// Shows a progress dialog while it sends the update to identica
 				final ProgressDialog dialog = ProgressDialog.show(v.getContext(), "", 
