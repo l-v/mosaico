@@ -15,18 +15,12 @@ import java.net.URLEncoder;
 public class IdenticaAPI {
 	String username;
 	String password;
-	
-	//String message;
-	
-	
-//	public static void main(String[] args) {
-//        IdenticaAPI id = new IdenticaAPI("ctrler", "vodafone2");
-//        id.postUpdate("Teste 123");
-//    }
-	
-	
-	
+	boolean updateOK; // saves the status of the last update	
 
+
+	public boolean isUpdateOK() {
+		return updateOK;
+	}
 
 	/**
 	 * Constructor
@@ -37,6 +31,7 @@ public class IdenticaAPI {
 
 		this.username = username;
 		this.password = password;
+		this.updateOK = false;
 	}
 
 	/**
@@ -44,7 +39,7 @@ public class IdenticaAPI {
 	 * @param message
 	 * @return True if post OK, false otherwise
 	 */
-	public boolean postUpdate(String message){
+	public void postUpdate(String message){
 
 		try{// Creates the connection
 			URL url = null;
@@ -84,13 +79,13 @@ public class IdenticaAPI {
 			rd.close();
 			System.out.println(response.toString());
 		
-			return true;
+			updateOK = true;
 
 
 		}catch (Exception e) {
 
 			e.printStackTrace();
-			return false;
+			updateOK = false;
 		}
 	}
 
