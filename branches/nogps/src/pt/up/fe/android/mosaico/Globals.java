@@ -9,7 +9,8 @@ final class Globals {
 	public static final int NUMBER_PHOTOS_TO_GET = 50;
 	public static final double EARTH_RADIUS = 6371.01;
 	public static final String IDENTICA_URL = "http://identi.ca/api/statuses/update.xml?source=Mosaico";
-	
+	public static String identicaUsername="";
+	public static String identicaPassword="";
 	public static boolean mBusy = false;
 	
 }
