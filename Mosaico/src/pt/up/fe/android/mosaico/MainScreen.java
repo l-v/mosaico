@@ -40,17 +40,16 @@ public class MainScreen extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		gridview = (GridView) findViewById(R.id.gridview);
-	}
-	
-	@Override
-	public void onStart() {
-		super.onStart();
-		/*  instantiate some stuff for the location */
 		boolean gotLoc = myLocation.getLocation(this, locationResult);
 		if(!gotLoc)
 		{
 			Toast.makeText(this, "no location", Toast.LENGTH_LONG).show();
 		}
+	}
+	
+	@Override
+	public void onStart() {
+		super.onStart();
 	}
 	
 	@Override	
@@ -94,6 +93,22 @@ public class MainScreen extends Activity {
 		inflater.inflate(R.menu.menu, menu);
 		return (super.onPrepareOptionsMenu(menu));
 	}
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		switch(requestCode) { 
+	    	case (1) : { 
+	    		if (resultCode == Activity.RESULT_OK)
+	    		{
+	    			Bundle b = data.getExtras();
+	    			currentLocation.setLatitude(b.getDouble("LATITUDE"));
+	    			currentLocation.setLongitude(b.getDouble("LONGITUDE"));
+	    			retrievePhotos();
+	    		}
+	    		break;
+	    	}
+	    }
+	}
 
 	/**
 	 * The "menu" button is pressed this handler is invoked
@@ -120,8 +135,11 @@ public class MainScreen extends Activity {
 			case R.id.gps_another:
 				// create a new intent for the gmaps view
 				Intent intent = new Intent(MainScreen.this, GoogleMapsView.class);
-				//intent.setClassName("pt.up.fe.android.mosaico","pt.up.fe.android.mosaico.GoogleMapsView");
-				MainScreen.this.startActivity(intent); // TODO: fix the error that gives when the activity is started (Map Activity)
+				Bundle b = new Bundle();
+				b.putDouble("LATITUDE", currentLocation.getLatitude());
+				b.putDouble("LONGITUDE", currentLocation.getLongitude());
+				intent.putExtras(b);
+				MainScreen.this.startActivityForResult(intent, 1);
 				return true;
 		case R.id.menu_pref:
 			Toast.makeText(this, "Preferences here!", Toast.LENGTH_LONG).show();
@@ -130,56 +148,4 @@ public class MainScreen extends Activity {
 			return super.onOptionsItemSelected(item);
 		}
 	}
-	
-	/** location Listener for the GPS **/
-/*	private class MyLocationListener implements LocationListener {
-		
-		/// when the location is changed update the photos 
-		@Override
-		public void onLocationChanged(Location location) {
-			if (location != null) {
-				currentLocation = location;
-				retrievePhotos();
-				lm.removeUpdates(ll);
-				// log the changes
-				Log.d("LOCATION CHANGED", location.getLatitude() + "");
-				Log.d("LOCATION CHANGED", location.getLongitude() + "");
-				// show a toast with the changes - maybe to remove later
-				Toast.makeText(MainScreen.this,
-						location.getLatitude() + " " + location.getLongitude(),
-						Toast.LENGTH_LONG).show();
-	        }
-	    }
-		// when the provider is disabled - ask the user to turn on the GPS
-	    @Override
-	    public void onProviderDisabled(String provider) {
-	    	// create the alert that will ask the user to go back or change the GPS settings
-			AlertDialog.Builder builder = new AlertDialog.Builder(MainScreen.this);
-	    	builder.setMessage(R.string.gps_disabled_question)
-	    	.setCancelable(false).setPositiveButton(R.string.gps_disabled_answer_yes, new DialogInterface.OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					// this invokes the Location settings
-					startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS), 0);
-				}
-			})
-			.setNegativeButton(R.string.gps_disabled_answer_no, new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					MainScreen.this.finish(); // exit the application 
-					//dialog.dismiss(); // dismiss the alert 
-				}
-			});
-	    	
-	    	AlertDialog alert = builder.create(); // create the alert
-	    	alert.show(); // show the dialog asking for turning on the GPS
-	    }
-	    @Override
-	    public void onProviderEnabled(String provider) {
-	    }
-	    @Override
-	    public void onStatusChanged(String provider, int status, Bundle extras) {
-	    }
-	} */
 }
