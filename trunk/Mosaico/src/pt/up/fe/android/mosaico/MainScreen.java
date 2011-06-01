@@ -4,6 +4,8 @@ import pt.up.fe.android.mosaico.MyLocation.LocationResult;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.location.Criteria;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.Menu;
@@ -24,28 +26,66 @@ public class MainScreen extends Activity {
 	
 	private Location currentLocation;
 	MyLocation myLocation = new MyLocation();
-
-	// implementation of the abstarct class, what to do when gotLocation
-	public LocationResult locationResult = new LocationResult() {
-	    @Override
-	    public void gotLocation(final Location location) {
-	        //Got the location!
-	    	currentLocation = location;
-	    	retrievePhotos();
-	    };
-	};
+	
+	public static final String PREFS_NAME = "MosaicoPrefs"; //Preferences file
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		
+	    SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+	    Globals.identicaUsername = settings.getString("iden_username", "");
+	    Globals.identicaPassword = settings.getString("iden_pass", "");
+	    
 		gridview = (GridView) findViewById(R.id.gridview);
+		
+		/*
+		 * This is not used anymore.
+		 */
+		//Double currentLatitude = 41.383263;
+		//Double currentLongitude = -8.780026;
+		
+		//myPhotos = new PhotoSet(currentLatitude, currentLongitude, 3);
+		
+//		processPhotos = new PanoramioAPI(myPhotos);
+//		gridview.setAdapter(new ImageAdapter(this, myPhotos));
+//		gridview.setOnItemClickListener(new OnItemClickListener() {
+//
+//			@Override
+//			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+//					long arg3) {
+//				ImageAdapter ad = (ImageAdapter) arg0.getAdapter();
+//				popPic dialog = new popPic(arg1.getContext(), ad.getItem(arg2));
+//				dialog.show();
+//			}
+//		});
+		
+		/*
+		 * this gets a location and 
+		 * afterwards call the function locationResult
+		 */
 		boolean gotLoc = myLocation.getLocation(this, locationResult);
-		if(!gotLoc)
-		{
+		if (!gotLoc)
 			Toast.makeText(this, "no location", Toast.LENGTH_LONG).show();
-		}
+
 	}
+	
+	/*
+	 *  This is what to do when we got a location.
+	 *  Here is were we retrieve the photos.
+	 *  implementation of the abstract class
+	 */
+	public LocationResult locationResult = new LocationResult() {
+	    @Override
+	    public void gotLocation(final Location location) {
+	        //Got the location!
+	    	if(location!= null){
+	    		currentLocation = location;
+	    		retrievePhotos();
+	    	}
+	    };
+	};
 	
 	@Override
 	public void onStart() {
@@ -130,7 +170,12 @@ public class MainScreen extends Activity {
 		case R.id.menu_gps:
 			return true;
 			case R.id.gps_current:
-				myLocation.getLocation(this, locationResult); // get a new location from the gps device
+				/*
+				 * Tries to get the location and if location OK retrieves photos
+				 */
+				boolean locOK = myLocation.getLocation(this, locationResult); // get a new location from the gps device
+				if(!locOK)
+					Toast.makeText(this, "no location", Toast.LENGTH_LONG).show();
 				return true;
 			case R.id.gps_another:
 				// create a new intent for the gmaps view
@@ -142,7 +187,8 @@ public class MainScreen extends Activity {
 				MainScreen.this.startActivityForResult(intent, 1);
 				return true;
 		case R.id.menu_pref:
-			Toast.makeText(this, "Preferences here!", Toast.LENGTH_LONG).show();
+			Intent pref = new Intent(this, Settings.class);
+			startActivity(pref);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

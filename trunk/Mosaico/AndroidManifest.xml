@@ -29,5 +29,6 @@
                 <category android:name="android.intent.category.DEFAULT" /> 
             </intent-filter> 
         </activity>
+    	<activity android:name=".Settings" android:label="Preferences"></activity>
     </application>
 </manifest>

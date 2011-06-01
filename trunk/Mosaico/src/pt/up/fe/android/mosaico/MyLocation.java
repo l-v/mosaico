@@ -16,6 +16,7 @@ public class MyLocation {
 	LocationResult locationResult;
 	boolean isGpsEnabled = false;
 	boolean isNetworkEnabled = false;
+	final static String TAG = "MyLocation";
 
 	ProgressDialog pd;
 
@@ -124,7 +125,10 @@ public class MyLocation {
 			// if there are both values use the latest one
 			if (gpsLoc != null && netLoc != null) {
 				if (gpsLoc.getTime() > netLoc.getTime())
+				{
 					locationResult.gotLocation(gpsLoc);
+				}
+					
 				else
 					locationResult.gotLocation(netLoc);
 				return;
@@ -143,6 +147,7 @@ public class MyLocation {
 			}
 			
 			// worst case scenario - there is no location at all
+			Log.d(TAG, "gpsLoc and netLoc are null");
 			locationResult.gotLocation(null);
 			pd.dismiss(); // dismiss the progress dialog
 		}
