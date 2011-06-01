@@ -1,18 +1,13 @@
 package pt.up.fe.android.mosaico;
 
+import pt.up.fe.android.mosaico.MyLocation.LocationResult;
+
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,13 +22,10 @@ public class MainScreen extends Activity {
 	/** Called when the activity is first created. */
 	PhotoSet myPhotos;
 	PanoramioAPI processPhotos;
-
-	private double currentLatitude = 9999;
-	private double currentLongitude = 9999;
-	
 	private GridView gridview;
-
-	ProgressDialog pd;
+	
+	private Location currentLocation;
+	MyLocation myLocation = new MyLocation();
 	
 	public static final String PREFS_NAME = "MosaicoPrefs"; //Preferences file
 	
@@ -48,127 +40,91 @@ public class MainScreen extends Activity {
 	    
 		gridview = (GridView) findViewById(R.id.gridview);
 		
-		this.currentLatitude = 41.383263;
-		this.currentLongitude = -8.780026;
+		/*
+		 * This is not used anymore.
+		 */
+		//Double currentLatitude = 41.383263;
+		//Double currentLongitude = -8.780026;
 		
-		myPhotos = new PhotoSet(currentLatitude, currentLongitude, 3);
+		//myPhotos = new PhotoSet(currentLatitude, currentLongitude, 3);
 		
-		processPhotos = new PanoramioAPI(myPhotos);
-		gridview.setAdapter(new ImageAdapter(this, myPhotos));
-		gridview.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				ImageAdapter ad = (ImageAdapter) arg0.getAdapter();
-				popPic dialog = new popPic(arg1.getContext(), ad.getItem(arg2));
-				dialog.show();
-			}
-		});
+//		processPhotos = new PanoramioAPI(myPhotos);
+//		gridview.setAdapter(new ImageAdapter(this, myPhotos));
+//		gridview.setOnItemClickListener(new OnItemClickListener() {
+//
+//			@Override
+//			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+//					long arg3) {
+//				ImageAdapter ad = (ImageAdapter) arg0.getAdapter();
+//				popPic dialog = new popPic(arg1.getContext(), ad.getItem(arg2));
+//				dialog.show();
+//			}
+//		});
+		
+		/*
+		 * this gets a location and 
+		 * afterwards call the function locationResult
+		 */
+		boolean gotLoc = myLocation.getLocation(this, locationResult);
+		if (!gotLoc)
+			Toast.makeText(this, "no location", Toast.LENGTH_LONG).show();
 
 	}
 	
+	/*
+	 *  This is what to do when we got a location.
+	 *  Here is were we retrieve the photos.
+	 *  implementation of the abstract class
+	 */
+	public LocationResult locationResult = new LocationResult() {
+	    @Override
+	    public void gotLocation(final Location location) {
+	        //Got the location!
+	    	if(location!= null){
+	    		currentLocation = location;
+	    		retrievePhotos();
+	    	}
+	    };
+	};
+	
+	@Override
+	public void onStart() {
+		super.onStart();
+	}
+	
+	@Override	
+    public void onResume() { 
+        super.onResume();
+
+	}
+	@Override
+	protected void onPause()
+	{
+		super.onPause();
+	}
+		
 	public void retrievePhotos()
 	{
-		if (currentLatitude != 9999 && currentLongitude != 9999)
+		if (currentLocation != null)
 		{
-		myPhotos = new PhotoSet(currentLatitude, currentLongitude, 3);
-		processPhotos = new PanoramioAPI(myPhotos);
-		gridview.setAdapter(new ImageAdapter(this, myPhotos));
-		gridview.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				ImageAdapter ad = (ImageAdapter) arg0.getAdapter();
-				popPic dialog = new popPic(arg1.getContext(), ad.getItem(arg2));
-				dialog.show();
-			}
-		});
+			myPhotos = new PhotoSet(currentLocation.getLatitude(), currentLocation.getLongitude(), 3);
+			processPhotos = new PanoramioAPI(myPhotos);
+			gridview.setAdapter(new ImageAdapter(this, myPhotos));
+			gridview.setOnItemClickListener(new OnItemClickListener() {
+				
+				@Override
+				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+						long arg3) {
+				    ImageAdapter ad = (ImageAdapter) arg0.getAdapter();
+				    popPic dialog = new popPic(arg1.getContext(), ad.getItem(arg2));
+					dialog.show();
+				}
+			});
 		}
 		else 
 		{
 			Toast.makeText(this, "problem with loading grid", Toast.LENGTH_LONG).show();
 		}
-	}
-	/**
-	 * Method invoked at startup. Getting last known location by the device
-	 * 
-	 */
-	private void getLastGoodLocation() {
-		try {
-			LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-			// create criteria for the provider to return
-			Criteria criteria = new Criteria();
-			criteria.setAccuracy(Criteria.ACCURACY_FINE);
-			criteria.setAltitudeRequired(false);
-			criteria.setBearingRequired(false);
-			criteria.setCostAllowed(true);
-			criteria.setPowerRequirement(Criteria.POWER_LOW);
-
-			String provider = lm.getBestProvider(criteria, true); // get the provider
-			Location location = lm.getLastKnownLocation(provider); // get the last known location
-        
-			// update the latitude and longitude
-			this.currentLatitude = location.getLatitude();
-			this.currentLongitude = location.getLongitude();
-		}
-		catch (Exception e)
-		{
-			// if something goes wrong in this method, try to get a fresh location
-			getFreshLocation();
-		}
-	}
-/**
- * retrieve a new location place
- */
-	public void getFreshLocation()
-	{
-		// TODO: fix the progress dialog to actually show while new location is being retrieved
-		pd = ProgressDialog.show(this, "Working... ", "Getting current location...");
-		
-		LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-	    LocationListener ll = new mylocationlistener(); // create the location listener
-	    // get location updates from the current GPS Provider, every 1sec
-	    // and notify if location changed within 100m
-	    lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000L, 100.0f, ll);
-	    
-	    boolean isGPS = lm.isProviderEnabled(LocationManager.GPS_PROVIDER); 
-	    if(!isGPS)
-	    {
-	    	checkGPSsettings(); // show dialog for choosing to switch on GPS or not
-	    }
-	    //TODO: fix this progress dialog
-	    pd.dismiss();
-	}
-	
-	/**
-	 * show alert to ask for gps settings 
-	 */
-	public void checkGPSsettings()
-	{
-		// create the alert that will ask the user to go back or change the GPS settings
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    	builder.setMessage("Enable your GPS or continue viewing old photos!")
-    	.setCancelable(false).setPositiveButton("Settings", new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				// this invokes the Location settings
-				startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS), 0);
-			}
-		})
-		.setNegativeButton("Old Photos", new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				//MainScreen.this.finish(); // exit the application 
-				dialog.dismiss(); // dismiss the alert 
-			}
-		});
-    	
-    	AlertDialog alert = builder.create(); // create the alert
-    	alert.show();
 	}
 	
 	@Override
@@ -176,6 +132,22 @@ public class MainScreen extends Activity {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.menu, menu);
 		return (super.onPrepareOptionsMenu(menu));
+	}
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		switch(requestCode) { 
+	    	case (1) : { 
+	    		if (resultCode == Activity.RESULT_OK)
+	    		{
+	    			Bundle b = data.getExtras();
+	    			currentLocation.setLatitude(b.getDouble("LATITUDE"));
+	    			currentLocation.setLongitude(b.getDouble("LONGITUDE"));
+	    			retrievePhotos();
+	    		}
+	    		break;
+	    	}
+	    }
 	}
 
 	/**
@@ -198,11 +170,21 @@ public class MainScreen extends Activity {
 		case R.id.menu_gps:
 			return true;
 			case R.id.gps_current:
-				getFreshLocation(); // get a new location from the gps device
+				/*
+				 * Tries to get the location and if location OK retrieves photos
+				 */
+				boolean locOK = myLocation.getLocation(this, locationResult); // get a new location from the gps device
+				if(!locOK)
+					Toast.makeText(this, "no location", Toast.LENGTH_LONG).show();
 				return true;
 			case R.id.gps_another:
-				Intent intent = new Intent(this, GoogleMapsView.class); // create a new intent for the gmaps view
-				startActivity(intent); // TODO: fix the error that gives when the activity is started (Map Activity)
+				// create a new intent for the gmaps view
+				Intent intent = new Intent(MainScreen.this, GoogleMapsView.class);
+				Bundle b = new Bundle();
+				b.putDouble("LATITUDE", currentLocation.getLatitude());
+				b.putDouble("LONGITUDE", currentLocation.getLongitude());
+				intent.putExtras(b);
+				MainScreen.this.startActivityForResult(intent, 1);
 				return true;
 		case R.id.menu_pref:
 			Intent pref = new Intent(this, Settings.class);
@@ -212,48 +194,4 @@ public class MainScreen extends Activity {
 			return super.onOptionsItemSelected(item);
 		}
 	}
-	
-	@Override
-	public void onResume() {
-		super.onResume();
-	}
-
-	@Override
-	public void onStart() {
-		super.onStart();
-	}
-	/** location Listener for the GPS **/
-	private class mylocationlistener implements LocationListener {
-		
-		/* overriding the default methods of the location listener that we need */
-		@Override
-		public void onLocationChanged(Location location) {
-			if (location != null) {
-				currentLatitude = location.getLatitude();
-				currentLongitude = location.getLongitude();
-				
-				// log the changes
-				Log.d("LOCATION CHANGED", currentLatitude + "");
-				Log.d("LOCATION CHANGED", currentLongitude + "");
-				// show a toast with the changes - maybe to remove later
-				Toast.makeText(MainScreen.this,
-						currentLongitude + " " + currentLongitude,
-						Toast.LENGTH_LONG).show();
-	        }
-			
-			// refresh the photos in the grid
-			 retrievePhotos();
-	    }
-	    @Override
-	    public void onProviderDisabled(String provider) {
-	    }
-	    @Override
-	    public void onProviderEnabled(String provider) {
-	    }
-	    @Override
-	    public void onStatusChanged(String provider, int status, Bundle extras) {
-	    }
-	}
-
-	
 }
