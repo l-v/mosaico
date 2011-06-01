@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello World, MainScreen!</string>
     <string name="app_name">Mosaico</string>
+    <string name="gps_disabled_question">Mosaico wants to use your GPS. Will you turn it on?</string>
+    <string name="gps_disabled_answer_yes">Settings</string>
+    <string name="gps_disabled_answer_no">No</string>
+    <string name="maps_question">Do you want to view photos from around?</string>
+    <string name="maps_answer_yes">Sure!</string>
+    <string name="maps_answer_no">Not now...</string>
 </resources>
