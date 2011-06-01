@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -34,11 +35,17 @@ public class MainScreen extends Activity {
 
 	ProgressDialog pd;
 	
+	public static final String PREFS_NAME = "MosaicoPrefs"; //Preferences file
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-
+		
+	    SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+	    Globals.identicaUsername = settings.getString("iden_username", "");
+	    Globals.identicaPassword = settings.getString("iden_pass", "");
+	    
 		gridview = (GridView) findViewById(R.id.gridview);
 		
 		this.currentLatitude = 41.383263;
@@ -198,7 +205,8 @@ public class MainScreen extends Activity {
 				startActivity(intent); // TODO: fix the error that gives when the activity is started (Map Activity)
 				return true;
 		case R.id.menu_pref:
-			Toast.makeText(this, "Preferences here!", Toast.LENGTH_LONG).show();
+			Intent pref = new Intent(this, Settings.class);
+			startActivity(pref);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
