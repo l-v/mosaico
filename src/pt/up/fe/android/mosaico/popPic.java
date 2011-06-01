@@ -3,6 +3,8 @@ package pt.up.fe.android.mosaico;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -27,7 +29,7 @@ class popPic extends Dialog{
 		
 		Button identicabutton = (Button) findViewById(R.id.identicabutton);
 		/*
-		 * This runs when we press the button to sent a post to identica 
+		 * This runs when we press the button to send a post to identica 
 		 */
 		identicabutton.setOnClickListener(new View.OnClickListener() {
 
@@ -79,6 +81,21 @@ class popPic extends Dialog{
 		
 		/* end of the identica button code */
 		
+		Button openmaps = (Button) findViewById(R.id.openmaps);
+		/*
+		 * This runs when we press the button Go To to start google maps 
+		 */
+		openmaps.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(final View v) {
+				Intent intent = new Intent(android.content.Intent.ACTION_VIEW, 
+						Uri.parse("geo:0,0?q="+data.getLatitude()+","+data.getLongitude()+" (" + data.getTitle() + ")"));
+//				Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+//						Uri.parse("google.navigation:q=an+address+city");
+						v.getContext().startActivity(intent);
+			}
+		});
 		
 		imageView.setImageBitmap(data.getPhoto());
 		imageView.setOnClickListener(new View.OnClickListener() {
