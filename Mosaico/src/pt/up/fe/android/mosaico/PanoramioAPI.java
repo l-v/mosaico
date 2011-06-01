@@ -75,8 +75,8 @@ public class PanoramioAPI {
 				double longitude = (Double.parseDouble(img.getString("longitude")));
 				double latitude = Double.parseDouble(img.getString("latitude"));
 				
-				int width = Integer.parseInt(img.getString("width"));
-				int height = Integer.parseInt(img.getString("height"));
+				int width = (int) Double.parseDouble(img.getString("width"));
+				int height = (int) Double.parseDouble(img.getString("height"));
 				
 				String uploadDate = img.getString("upload_date");
 			
