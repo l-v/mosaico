@@ -6,19 +6,14 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.gesture.GestureOverlayView;
-import android.gesture.GestureOverlayView.OnGestureListener;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.IInterface;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.ViewDebug.IntToString;
-import android.widget.AnalogClock;
 import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
@@ -26,7 +21,6 @@ import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
-import com.google.android.maps.OverlayItem;
 
 public class GoogleMapsView extends MapActivity {
 	static final String TAG = "MapActivity";
@@ -45,7 +39,6 @@ public class GoogleMapsView extends MapActivity {
 	    setContentView(R.layout.gmaps); 
 	    
 	    mapView = (MapView) findViewById(R.id.mapview);
-	    //MapView mapView = new MapView(this, "0cYXzPpWBPrvWY7kbfaQLfPd1drfAVJLdI0dYoA");
 	    mapView.setBuiltInZoomControls(true);
 	    mapController = mapView.getController();
 	  
@@ -55,11 +48,11 @@ public class GoogleMapsView extends MapActivity {
     	double latitude = b.getDouble("LATITUDE");
     	double longitude = b.getDouble("LONGITUDE");
     	
-    	// convert the long and lat into a geoPoint
+    	// convert the longitude and latitude into a geoPoint
     	point = new GeoPoint( (int) (latitude * 1E6), (int) (longitude * 1E6));
     	
-	    mapController.animateTo(point);
-	    mapController.setZoom(13);
+	    mapController.animateTo(point);		// animate to the current location
+	    mapController.setZoom(13);			// zoom to the current location
 	    
 	    //Add a location marker
         MapOverlay mapOverlay = new MapOverlay();
@@ -78,7 +71,7 @@ public class GoogleMapsView extends MapActivity {
 	}
 	
 	public void createOverlayWithListener() {
-        //Create the overlay with the pushpin
+        //Create the overlay with the push pin
         final ManagedOverlay managedOverlay = overlayManager.createOverlay("listenerOverlay", getResources().getDrawable(R.drawable.pushpin));
         
         // the way we create the gesture listener
@@ -92,10 +85,8 @@ public class GoogleMapsView extends MapActivity {
                 Drawable defaultmarker = getResources().getDrawable(R.drawable.pushpin);     
 
                 ManagedOverlay managedOverlay = overlayManager.createOverlay(defaultmarker);
-
-                //creating some marker:
+                //creating a marker
                 managedOverlay.createItem(point);
-
                 //registers the ManagedOverlayer to the MapView
                 overlayManager.populate();
                 Toast.makeText(getApplicationContext(), "You created a Marker!", Toast.LENGTH_LONG).show();
@@ -104,11 +95,10 @@ public class GoogleMapsView extends MapActivity {
             }
 
             public void onLongPress(MotionEvent event, ManagedOverlay arg1) {
-                if (event.getPointerCount() > 1) return;
-                
+                if (event.getPointerCount() > 1) 
+                	return;  
+                // get the long pressed location in a GeoPoint
                 touchedPoint = mapView.getProjection().fromPixels((int) event.getX(), (int) event.getY());
-//	                    Toast.makeText(getBaseContext(), touchedPoint.getLatitudeE6() / 1E6 + "," + 
-//	                    		touchedPoint.getLongitudeE6() /1E6 , Toast.LENGTH_SHORT).show();
                 getAlertDialog().show(); 
 	        	    	
             }
@@ -136,7 +126,7 @@ public class GoogleMapsView extends MapActivity {
 	
 	/**
 	 * Get the dialog for returning back to mainscreen to show the photos 
-	 * @return
+	 * @return AlertDialog
 	 */
 	public AlertDialog getAlertDialog(){
 		if (alert != null) {
@@ -169,7 +159,7 @@ public class GoogleMapsView extends MapActivity {
 		return builder.create();
 	}
 	
-	// first overlay with 
+	// first overlay with current position
 	 class MapOverlay extends com.google.android.maps.Overlay 
 	    {
 	        @Override

@@ -12,5 +12,7 @@ final class Globals {
 	public static String identicaUsername="";
 	public static String identicaPassword="";
 	public static boolean mBusy = false;
+	public static final int ACTIVITY_LOCATION_SETTINGS = 1;
+	public static final int ACTIVITY_GOOGLE_MAPS = 2;
 	
 }
