@@ -7,9 +7,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 class popPic extends Dialog{
@@ -104,10 +107,33 @@ class popPic extends Dialog{
 		});
 		
 		imageView.setImageBitmap(data.getPhoto());
+		
+		/*
+		 * When we click the image we show a dialog with the details. 
+		 */
 		imageView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				dismiss();				
+                //set up dialog
+                Dialog dialog = new Dialog(v.getContext());
+                dialog.setContentView(R.layout.details);
+                dialog.setTitle("Details");
+                dialog.setCancelable(true);
+                //there are a lot of settings, for dialog, check them all out!
+ 
+                //set up text
+                TextView text = (TextView) dialog.findViewById(R.id.photodetails);
+                
+                // This is formated as html
+                Spanned details = Html.fromHtml(
+                		"<b>Title:</b> " + data.getTitle() +  
+                		"<br /><b>Owner:</b> " + data.getOwnerName() + 
+                		"<br /><b>URL:</b> " + data.getWebUrl() +
+                		"<br /><b>Lat:</b> " + data.getLatitude() + 
+                		"<br /><b>Long:</b> " + data.getLongitude() + 
+                		"<br /><b>Origin:</b> " + data.getSiteName());
+                text.setText(details);
+                dialog.show();
 			}
 		});
 
