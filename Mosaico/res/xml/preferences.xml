@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android">
+		<EditTextPreference android:title="Username" android:summary="Your identi.ca username" android:key="username"></EditTextPreference>
+		<EditTextPreference android:title="Password" android:summary="Your identi.ca password" android:key="password"></EditTextPreference>
+		<EditTextPreference android:title="Photo Range" android:key="photos_range" android:defaultValue="2" android:summary="Set the range of photos to be retrieved. In km."></EditTextPreference>
+		<EditTextPreference android:key="photos_number" android:title="Photos Number" android:summary="How many photos would you like to show on the main screen?" android:defaultValue="50"></EditTextPreference>
+</PreferenceScreen>

@@ -15,6 +15,7 @@ import android.location.Location;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,10 +29,12 @@ import android.widget.Toast;
 
 public class MainScreen extends Activity {
 	private static final String TAG = "MainScreen";
-	 
+	
 	/* Fields accessed in the class */
 	private PhotoSet myPhotos;
 	private GridView gridview;
+	
+	private SharedPreferences preferences;
 	
 	private Location currentLocation; 
 	private MyLocationHelper myLocationHelper = new MyLocationHelper();
@@ -49,12 +52,13 @@ public class MainScreen extends Activity {
 	    
 	    // inflate the main grid
 		gridview = (GridView) findViewById(R.id.gridview);
-		
+		preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		
 		 // if internet connection is present at startup - check for location
 		if (hasInternetConnection()){
 			getLocation(); // call to get location
 		}
+		
 	}
 	
 	
@@ -214,7 +218,7 @@ public class MainScreen extends Activity {
 		super.onActivityResult(requestCode, resultCode, data);
 		switch(requestCode) { 
 			// when coming back from Google Maps
-	    	case (Globals.ACTIVITY_GOOGLE_MAPS) : { 
+	    	case Globals.ACTIVITY_GOOGLE_MAPS : { 
 	    		if (resultCode == Activity.RESULT_OK)
 	    		{
 	    			Bundle b = data.getExtras();
@@ -225,8 +229,29 @@ public class MainScreen extends Activity {
 	    		break;
 	    	}
 	    	// when coming back from Location Settings
-	    	case (Globals.ACTIVITY_LOCATION_SETTINGS) : {
+	    	case Globals.ACTIVITY_LOCATION_SETTINGS : {
 	    		getLocation();	// refresh the location
+	    	}
+	    	case Globals.ACTIVITY_PREFERENCES:
+	    	{
+	    		// store the values of the preferences
+	    		Globals.identicaUsername = preferences.getString("username", null);
+	    		Globals.identicaPassword = preferences.getString("password", null);
+	    		String photos_range = preferences.getString("photos_range", null);
+	    		String photos_number = preferences.getString("photos_number", null);
+
+	    		try {
+	    		Globals.photos_range = Integer.valueOf(photos_range);
+	    		Globals.photos_number = Integer.valueOf(photos_number);
+	    		} catch( NumberFormatException e)
+	    		{
+	    			Toast.makeText(MainScreen.this, "Wrong Photos range or Photos number!" , Toast.LENGTH_LONG).show();
+	    		}
+	    		
+//	    		Toast.makeText(MainScreen.this, "username: " + Globals.identicaUsername, Toast.LENGTH_SHORT).show();
+//	    		Toast.makeText(MainScreen.this, "password: " + Globals.identicaPassword, Toast.LENGTH_SHORT).show();
+//	    		Toast.makeText(MainScreen.this, "photos range: " + Globals.photos_range, Toast.LENGTH_SHORT).show();
+//	    		Toast.makeText(MainScreen.this, "photos number: " + Globals.photos_number, Toast.LENGTH_SHORT).show();
 	    	}
 	    }
 	}
@@ -249,8 +274,9 @@ public class MainScreen extends Activity {
 			Toast.makeText(this, "Favorites Here!", Toast.LENGTH_LONG).show();
 			return true;
 		case R.id.menu_history:
-			Toast.makeText(this, "History here!", Toast.LENGTH_LONG).show();
-			return true;
+			Toast.makeText(MainScreen.this, "int" + preferences.getString("username", "n/a"), Toast.LENGTH_LONG).show();
+//			Toast.makeText(this, "History here!", Toast.LENGTH_LONG).show();
+			return true; 
 		case R.id.menu_gps:
 			return true;
 			case R.id.gps_current: 
@@ -267,8 +293,11 @@ public class MainScreen extends Activity {
 				MainScreen.this.startActivityForResult(intent, Globals.ACTIVITY_GOOGLE_MAPS);
 				return true;
 		case R.id.menu_pref:
-			Intent pref = new Intent(this, Settings.class);
-			startActivity(pref);
+			// Launch Preference activity
+			Intent i = new Intent(MainScreen.this, Preferences.class);
+			startActivityForResult(i, Globals.ACTIVITY_PREFERENCES);
+//			Intent pref = new Intent(this, Settings.class);
+//			startActivity(pref);
 			return true;
 		case R.id.exit_app:
 			finish();
