@@ -30,6 +30,7 @@ public class Photo {
 	 */
 	private float distance;
 	private int site; // 0 is Panoramio; 1 is Flicker;
+	private String siteName;
 	
 	Bitmap thumbnail;
 	/**
@@ -50,7 +51,7 @@ public class Photo {
 	 */
 	Photo (int imgId, String imgTitle, String imgWebUrl, String imgFileUrl, 
 			double imgLong, double imgLat, int imgWidth, int imgHeight,
-			String imgUpload, int imgOwnerId, String imgOwnerName, String imgOwnerUrl) {
+			String imgUpload, int imgOwnerId, String imgOwnerName, String imgOwnerUrl, int site, String siteName) {
 		
 		id = imgId;
 		title = imgTitle;
@@ -71,8 +72,16 @@ public class Photo {
 		
 		thumbnail = null;
 		
+		// TODO
+		this.site = site;
+		this.siteName = siteName;
+		
 	}
 	
+	public String getSiteName() {
+		return siteName;
+	}
+
 	/**
 	 * Returns the URL to the full website of the photo.
 	 * @return webURL
@@ -151,5 +160,13 @@ public class Photo {
 
 	public double getLatitude() {
 		return latitude;
+	}
+
+	public void setSite(int site) {
+		this.site = site;
+	}
+
+	public int getSite() {
+		return site;
 	}
 }

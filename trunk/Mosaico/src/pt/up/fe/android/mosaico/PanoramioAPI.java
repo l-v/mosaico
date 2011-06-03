@@ -93,7 +93,7 @@ public class PanoramioAPI {
 
 				Photo newPhoto = new Photo(id, title, webUrl, fileUrl, 
 						longitude, latitude, width, height,
-						uploadDate, ownerId, ownerName, ownerUrl);
+						uploadDate, ownerId, ownerName, ownerUrl, 0, "Panoramio");
 
 				photoList.addPhoto(newPhoto);
 			}
