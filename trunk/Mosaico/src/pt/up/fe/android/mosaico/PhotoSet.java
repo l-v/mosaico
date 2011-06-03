@@ -40,7 +40,7 @@ public class PhotoSet {
 		this.maxLatitude = maxLatitude;
 		this.maxLongitude = maxLongitude;
 		
-		this.currentLocation = currentLocation = GeoLocation.fromDegrees(currentLatitude, currentLongitude);
+		this.currentLocation = GeoLocation.fromDegrees(currentLatitude, currentLongitude);
 		
 		photoList = new ArrayList<Photo>();
 	}
@@ -64,7 +64,7 @@ public class PhotoSet {
 		this.maxLongitude = boundingBox[1].getLongitudeInDegrees();
 		
 		
-		//Log.d("COORDINATES", "minLatitude: " + minLatitude + " , minLongitude: " + minLongitude +" , maxLatitude: " + maxLatitude +" , maxLongitude: " + maxLongitude);
+		Log.d("COORDINATES", "minLatitude: " + minLatitude + " , minLongitude: " + minLongitude +" , maxLatitude: " + maxLatitude +" , maxLongitude: " + maxLongitude);
 	}
 	
 	

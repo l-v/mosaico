@@ -120,7 +120,14 @@ public class Photo {
 	 * @return Bitmap of the fetched photo
 	 */
 	public Bitmap getPhoto(){
-		return ImgDownload.getImage(fileUrl);
+		Bitmap image = ImgDownload.getImage(fileUrl);
+		/* So it will at least return the thumbnail (that's already saved)
+		 * if it couldn't decode the image.
+		 */
+		if (image==null)
+			return getThumb();
+		else
+			return image;
 	}
 	
 	/**
