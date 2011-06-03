@@ -1,6 +1,6 @@
 package pt.up.fe.android.mosaico;
 
-import java.net.UnknownHostException;
+import java.net.UnknownHostException; 
 
 import pt.up.fe.android.mosaico.MyLocationHelper.LocationResult;
 
@@ -8,11 +8,13 @@ import pt.up.fe.android.mosaico.Exceptions.*;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.location.Location;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -50,15 +52,19 @@ public class MainScreen extends Activity {
 	    // inflate the main grid
 		gridview = (GridView) findViewById(R.id.gridview);
 		
-		getLocation(); // call to get location
-		//checkInternetConnection(); // check Internet Connection
+		
+		 // if internet connection is present at startup - check for location
+		if (hasInternetConnection()){
+			getLocation(); // call to get location
+		}
 	}
 	
 	
 	/** this is called when the screen rotates.
 	 * (onCreate is no longer called when screen rotates due to manifest, see: android:configChanges)
-	 * @Override
+	 * 
 	 */
+	@Override
 	public void onConfigurationChanged(Configuration newConfig)
 	{
 	    super.onConfigurationChanged(newConfig);
@@ -114,18 +120,21 @@ public class MainScreen extends Activity {
 	 * Check if Internet connection is available and is connected
 	 * @return boolean
 	 */
-	/* private void checkInternetConnection() {
+	 private boolean hasInternetConnection() {
 	    ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 	    // test for connection
-	    if (cm.getActiveNetworkInfo() == null
-	            && !cm.getActiveNetworkInfo().isAvailable()
-	            && !cm.getActiveNetworkInfo().isConnected()) {
-	    	
+	    if (cm.getActiveNetworkInfo() != null
+	            && cm.getActiveNetworkInfo().isAvailable()
+	            && cm.getActiveNetworkInfo().isConnected()) {
+	    	return true;
+	    }
+	    else
+	    {
 	    	Toast.makeText(this	, R.string.internet_no_connection, Toast.LENGTH_LONG).show();
 	        Log.v(TAG, "Internet Connection Not Present");
-
+	        return false;
 	    }
-	} */
+	}
 	
 	@Override
 	public void onStart() {
