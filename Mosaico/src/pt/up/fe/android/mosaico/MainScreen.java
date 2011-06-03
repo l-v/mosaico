@@ -1,7 +1,5 @@
 package pt.up.fe.android.mosaico;
 
-import java.net.UnknownHostException; 
-
 import pt.up.fe.android.mosaico.MyLocationHelper.LocationResult;
 
 import pt.up.fe.android.mosaico.Exceptions.*;
@@ -176,7 +174,7 @@ public class MainScreen extends Activity {
 							}
 						});
 						pd.dismiss(); // dismiss the loading photos screen
-						} catch (NoPhotosFoundExcepton e)
+						} catch (NoPhotosFoundException e)
 						{
 							pd.dismiss(); // dismiss the loading photos screen
 							Log.d(TAG, e.getMessage());
