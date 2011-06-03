@@ -7,7 +7,7 @@
     <string name="maps_question">Do you want to view photos from around?</string>
     <string name="maps_answer_yes">Sure!</string>
     <string name="maps_answer_no">Not yet...</string>
-    <string name="internet_no_connection">Check your Internet connection first!</string>
+    <string name="internet_no_connection">Internet connection is not present!</string>
     <string name="location_not_found">No Netowork or GPS Location available</string>
     <string name="photos_not_loaded">Photos could not be loaded. No location found!</string>
     <string name="location_searching">Getting fresh location...</string>
