@@ -3,6 +3,8 @@ package pt.up.fe.android.mosaico;
 import java.io.*;
 import java.net.*;
 import org.json.*;
+
+import pt.up.fe.android.mosaico.Exceptions.NoPhotosFoundExcepton;
 /*
 import org.json.*;
 import net.sf.json.JSONObject;
@@ -20,7 +22,7 @@ public class PanoramioAPI {
 	private String log = "panoramioLog";
 	private PhotoSet photoList;
 	
-	public PanoramioAPI(PhotoSet photoList) {
+	public PanoramioAPI(PhotoSet photoList) throws NoPhotosFoundExcepton {
 		defaultSize = "medium";
 		defaultNumber = Globals.NUMBER_PHOTOS_TO_GET; 
 		defaultSet = "full";
@@ -30,7 +32,7 @@ public class PanoramioAPI {
 		
 	}
 	
-	public PanoramioAPI(PhotoSet photoList, int numberPhotos) {
+	public PanoramioAPI(PhotoSet photoList, int numberPhotos) throws NoPhotosFoundExcepton {
 		defaultSize = "square";
 		defaultNumber = numberPhotos; 
 		defaultSet = "public";
@@ -42,7 +44,7 @@ public class PanoramioAPI {
 
 
 	// TODO: put code slightly more readable
-	public void jsonParser(String replyMsg) {
+	public void jsonParser(String replyMsg) throws NoPhotosFoundExcepton {
 
 
 		try {
@@ -52,6 +54,11 @@ public class PanoramioAPI {
 			
 
 			int count = Integer.parseInt(jsonMsg.getString("count"));
+			
+			if (count == 0)
+			{
+				throw new NoPhotosFoundExcepton(); 
+			}
 			JSONArray jsonArray = jsonMsg.getJSONArray("photos");
 
 			Log.v(log, "found " + count + " photos");
@@ -110,14 +117,15 @@ public class PanoramioAPI {
 	 * @param maxLong: maximum longitude
 	 * @param maxLat: maximun latitude
 	 * @return
+	 * @throws NoPhotosFoundExcepton 
 	 */
-	public void getPictures(double minLat, double minLong, double maxLat, double maxLong) {
+	public void getPictures(double minLat, double minLong, double maxLat, double maxLong) throws NoPhotosFoundExcepton {
 
 		this.getPictures(minLat, minLong, maxLat, maxLong, defaultSize, defaultNumber, defaultSet);
 
 	}
 
-	public void getPictures(double minLat, double minLong, double maxLat, double maxLong, String size, int number, String set) {
+	public void getPictures(double minLat, double minLong, double maxLat, double maxLong, String size, int number, String set) throws NoPhotosFoundExcepton {
 
 		
 
