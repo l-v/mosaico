@@ -81,25 +81,16 @@ public class GoogleMapsView extends MapActivity {
                 return false;
             }
  
-            public boolean onDoubleTap(MotionEvent e, ManagedOverlay overlay, GeoPoint point, ManagedOverlayItem item) {
-                Drawable defaultmarker = getResources().getDrawable(R.drawable.pushpin);     
-
-                ManagedOverlay managedOverlay = overlayManager.createOverlay(defaultmarker);
-                //creating a marker
-                managedOverlay.createItem(point);
-                //registers the ManagedOverlayer to the MapView
-                overlayManager.populate();
-                Toast.makeText(getApplicationContext(), "You created a Marker!", Toast.LENGTH_LONG).show();
+            public boolean onDoubleTap(MotionEvent event, ManagedOverlay overlay, GeoPoint point, ManagedOverlayItem item) {
+                 // get the long pressed location in a GeoPoint
+                 touchedPoint = mapView.getProjection().fromPixels((int) event.getX(), (int) event.getY());
+                 getAlertDialog().show(); 
 
                 return true;
             }
 
             public void onLongPress(MotionEvent event, ManagedOverlay arg1) {
-                if (event.getPointerCount() > 1) 
-                	return;  
-                // get the long pressed location in a GeoPoint
-                touchedPoint = mapView.getProjection().fromPixels((int) event.getX(), (int) event.getY());
-                getAlertDialog().show(); 
+               
 	        	    	
             }
 
