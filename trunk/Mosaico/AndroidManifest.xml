@@ -32,6 +32,7 @@
             </intent-filter> 
         </activity>
     	<activity android:name=".Settings" android:label="Preferences"></activity>
+    	<activity android:label="Preferences" android:name="Preferences"></activity>
     </application>
     
     
