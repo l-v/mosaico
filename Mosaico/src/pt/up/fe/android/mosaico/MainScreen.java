@@ -257,16 +257,6 @@ public class MainScreen extends Activity {
 		case R.id.menu_refresh:   
 			retrievePhotos(); // refresh the photos
 			return true;
-		case R.id.menu_path:
-			Toast.makeText(this, "Path here!", Toast.LENGTH_LONG).show();
-			return true;
-		case R.id.menu_fav:
-			Toast.makeText(this, "Favorites Here!", Toast.LENGTH_LONG).show();
-			return true;
-		case R.id.menu_history:
-			Toast.makeText(MainScreen.this, "int" + preferences.getString("username", "n/a"), Toast.LENGTH_LONG).show();
-//			Toast.makeText(this, "History here!", Toast.LENGTH_LONG).show();
-			return true; 
 		case R.id.menu_gps:
 			return true;
 			case R.id.gps_current: 
