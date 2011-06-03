@@ -19,6 +19,7 @@ public class PhotoSet {
 	private double minLongitude;
 	private double maxLatitude;
 	private double maxLongitude;
+	private double maxDistance;
 	
 	private GeoLocation currentLocation;
 	
@@ -50,6 +51,7 @@ public class PhotoSet {
 		
 		this.currentLatitude = currentLatitude;
 		this.currentLongitude = currentLongitude;
+		this.maxDistance = maxDistance;
 		
 		currentLocation = GeoLocation.fromDegrees(currentLatitude, currentLongitude);
 		
@@ -62,7 +64,7 @@ public class PhotoSet {
 		this.maxLongitude = boundingBox[1].getLongitudeInDegrees();
 		
 		
-		Log.d("COORDINATES", "minLatitude: " + minLatitude + " , minLongitude: " + minLongitude +" , maxLatitude: " + maxLatitude +" , maxLongitude: " + maxLongitude);
+		//Log.d("COORDINATES", "minLatitude: " + minLatitude + " , minLongitude: " + minLongitude +" , maxLatitude: " + maxLatitude +" , maxLongitude: " + maxLongitude);
 	}
 	
 	
@@ -115,6 +117,9 @@ public class PhotoSet {
 		return maxLongitude;
 	}
 	
+	public double getMaxDistance() {
+		return maxDistance;
+	}
 	/**
 	 * Adds a newPhoto to the photoList.
 	 * @param newPhoto

@@ -31,4 +31,8 @@
         </activity>
     	<activity android:name=".Settings" android:label="Preferences"></activity>
     </application>
+    
+    
+     <uses-library android:name="android.test.runner" />
+    <instrumentation android:targetPackage="pt.up.fe.android.mosaico" android:name="android.test.InstrumentationTestRunner" />
 </manifest>
