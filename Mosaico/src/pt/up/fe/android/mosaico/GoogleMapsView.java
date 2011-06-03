@@ -13,6 +13,9 @@ import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.widget.Toast;
 
@@ -70,6 +73,40 @@ public class GoogleMapsView extends MapActivity {
 		return false;
 	}
 	
+	/**
+	 * Inflate the Main menu
+	 */
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.maps_menu, menu);
+		return (super.onPrepareOptionsMenu(menu));
+	}
+	
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle item selection
+		switch (item.getItemId()) {
+		case R.id.layouts:   
+			return true;
+		case R.id.layout_map:
+			mapView.setSatellite(false);
+			return true;
+		case R.id.layout_satellite:
+			mapView.setSatellite(true);
+			return true;
+		case R.id.zoom_to_current:
+			mapController.animateTo(point);		// animate to the current location
+		    mapController.setZoom(15);			// zoom to the current location
+			return true;
+		
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+	
+	/**
+	 * Create the Overlay and implement the listener (from ready library)
+	 */
 	public void createOverlayWithListener() {
         //Create the overlay with the push pin
         final ManagedOverlay managedOverlay = overlayManager.createOverlay("listenerOverlay", getResources().getDrawable(R.drawable.pushpin));

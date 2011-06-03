@@ -253,7 +253,7 @@ public class MainScreen extends Activity {
 			return true;
 		case R.id.menu_gps:
 			return true;
-			case R.id.gps_current:
+			case R.id.gps_current: 
 				getLocation();
 				return true;
 			case R.id.gps_another:
@@ -270,6 +270,8 @@ public class MainScreen extends Activity {
 			Intent pref = new Intent(this, Settings.class);
 			startActivity(pref);
 			return true;
+		case R.id.exit_app:
+			finish();
 		default:
 			return super.onOptionsItemSelected(item);
 		}
