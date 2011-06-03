@@ -125,12 +125,24 @@ public class PhotoSet {
 	 * @param newPhoto
 	 */
 	public void addPhoto(Photo newPhoto) {
-		
+
 		// TODO: put in list organized
 		GeoLocation photoLocation = GeoLocation.fromDegrees(newPhoto.getLatitude(), newPhoto.getLongitude());
 		
 		newPhoto.setDistance( (float) photoLocation.distanceTo(currentLocation, Globals.EARTH_RADIUS));
 		
+		/*
+		 * To keep the photos sorted by distance
+		 * Adds the photo before the first one thats farther away than it.
+		 */
+		for(Photo ph : photoList){
+			if(ph.getDistance() > newPhoto.getDistance()){
+				photoList.add(photoList.indexOf(ph),newPhoto);
+				return; // so it won't add the photo again
+			}
+			
+		}
+		// Adds the photo at the end if it's the farthest away or at the beginning if the array is empty.
 		photoList.add(newPhoto);
 		
 		
