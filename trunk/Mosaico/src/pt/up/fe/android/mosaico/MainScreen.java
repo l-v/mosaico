@@ -235,9 +235,13 @@ public class MainScreen extends Activity {
 	    	case Globals.ACTIVITY_LOCATION_SETTINGS : {
 	    		getLocation();	// refresh the location
 	    	}
+	    	// when coming back from Preferences
 	    	case Globals.ACTIVITY_PREFERENCES:
 	    	{
+	    		// store the new values form Preferences to Globals
 	    		getPreferences();
+	    		// refresh the photos after preferences
+	    		retrievePhotos();
 	    	}
 	    }
 	}
