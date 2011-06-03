@@ -11,6 +11,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -52,6 +53,30 @@ public class MainScreen extends Activity {
 		getLocation(); // call to get location
 		//checkInternetConnection(); // check Internet Connection
 	}
+	
+	
+	/** this is called when the screen rotates.
+	 * (onCreate is no longer called when screen rotates due to manifest, see: android:configChanges)
+	 * @Override
+	 */
+	public void onConfigurationChanged(Configuration newConfig)
+	{
+	    super.onConfigurationChanged(newConfig);
+	    setContentView(R.layout.main);
+	    gridview = (GridView) findViewById(R.id.gridview);
+	    gridview.setAdapter(new ImageAdapter(MainScreen.this, myPhotos));
+	    gridview.setOnItemClickListener(new OnItemClickListener() { 
+			
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+			    ImageAdapter ad = (ImageAdapter) arg0.getAdapter();
+			    popPic dialog = new popPic(arg1.getContext(), ad.getItem(arg2));
+				dialog.show();
+			}
+		});
+	}	
+	
+	
 	/*
 	 * this gets the location returned in locationResult from LocationResult class
 	 * implemented here in the Main Activity. 

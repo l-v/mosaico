@@ -29,11 +29,14 @@ public class ImgDownload {
              * Sometimes the pics don't show up with this in the log:
              * 05-31 16:19:19.877: DEBUG/skia(24187): --- decoder->decode returned false
              * I'm making this retry until it gets the bitmap.
+             * It will only retry 5 times.
              */
+        	int counter = 0;
         	do{
 	            in = OpenHttpConnection(URL);
 	            tmpBitmap = BitmapFactory.decodeStream(in);
-        	}while(tmpBitmap == null);
+	            counter++;
+        	}while(tmpBitmap == null && counter < 5);
             in.close();
         } catch (IOException e1) {
             // TODO Auto-generated catch block
