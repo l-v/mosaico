@@ -24,7 +24,7 @@ public class PanoramioAPI {
 	
 	public PanoramioAPI(PhotoSet photoList) throws NoPhotosFoundException {
 		defaultSize = "medium";
-		defaultNumber = Globals.NUMBER_PHOTOS_TO_GET; 
+		defaultNumber = Globals.photos_number_to_get; 
 		defaultSet = "full";
 		this.photoList = photoList;
 		

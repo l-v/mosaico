@@ -46,13 +46,16 @@ public class MainScreen extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		
-	    SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-	    Globals.identicaUsername = settings.getString("iden_username", "");
-	    Globals.identicaPassword = settings.getString("iden_pass", "");
+		preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		// store preferences in Globals
+		getPreferences();
+	    //SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+	    //Globals.identicaUsername = settings.getString("iden_username", "");
+	    //Globals.identicaPassword = settings.getString("iden_pass", "");
 	    
 	    // inflate the main grid
 		gridview = (GridView) findViewById(R.id.gridview);
-		preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		
 		
 		 // if internet connection is present at startup - check for location
 		if (hasInternetConnection()){
@@ -165,7 +168,7 @@ public class MainScreen extends Activity {
 			Thread t = new Thread() { 
 				public void run() {
 					try {	
-						myPhotos = new PhotoSet(currentLocation.getLatitude(), currentLocation.getLongitude(), 3);
+						myPhotos = new PhotoSet(currentLocation.getLatitude(), currentLocation.getLongitude(), Globals.photos_range);
 						new PanoramioAPI(myPhotos);
 						gridview.setAdapter(new ImageAdapter(MainScreen.this, myPhotos));
 						gridview.setOnItemClickListener(new OnItemClickListener() { 
@@ -234,24 +237,7 @@ public class MainScreen extends Activity {
 	    	}
 	    	case Globals.ACTIVITY_PREFERENCES:
 	    	{
-	    		// store the values of the preferences
-	    		Globals.identicaUsername = preferences.getString("username", null);
-	    		Globals.identicaPassword = preferences.getString("password", null);
-	    		String photos_range = preferences.getString("photos_range", null);
-	    		String photos_number = preferences.getString("photos_number", null);
-
-	    		try {
-	    		Globals.photos_range = Integer.valueOf(photos_range);
-	    		Globals.photos_number = Integer.valueOf(photos_number);
-	    		} catch( NumberFormatException e)
-	    		{
-	    			Toast.makeText(MainScreen.this, "Wrong Photos range or Photos number!" , Toast.LENGTH_LONG).show();
-	    		}
-	    		
-//	    		Toast.makeText(MainScreen.this, "username: " + Globals.identicaUsername, Toast.LENGTH_SHORT).show();
-//	    		Toast.makeText(MainScreen.this, "password: " + Globals.identicaPassword, Toast.LENGTH_SHORT).show();
-//	    		Toast.makeText(MainScreen.this, "photos range: " + Globals.photos_range, Toast.LENGTH_SHORT).show();
-//	    		Toast.makeText(MainScreen.this, "photos number: " + Globals.photos_number, Toast.LENGTH_SHORT).show();
+	    		getPreferences();
 	    	}
 	    }
 	}
@@ -330,6 +316,25 @@ public class MainScreen extends Activity {
 		
 		AlertDialog alert = builder.create(); // create the alert
 		alert.show(); // show the dialog 
+	}
+	
+	/**
+	 * Get preferences and store them in Globals for the app to use them
+	 */
+	private void getPreferences()
+	{// store the values of the preferences
+		Globals.identicaUsername = preferences.getString("username", null);
+		Globals.identicaPassword = preferences.getString("password", null);
+		String photos_range = preferences.getString("photos_range", null);
+		String photos_number = preferences.getString("photos_number", null);
+	
+		try {
+		Globals.photos_range = Integer.valueOf(photos_range);
+		Globals.photos_number_to_get = Integer.valueOf(photos_number);
+		} catch( NumberFormatException e)
+		{
+			Toast.makeText(MainScreen.this, "Wrong Photos range or Photos number!" , Toast.LENGTH_LONG).show();
+		}
 	}
 
 }
