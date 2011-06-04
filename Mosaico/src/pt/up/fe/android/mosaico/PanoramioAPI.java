@@ -22,6 +22,13 @@ public class PanoramioAPI {
 	private String log = "panoramioLog";
 	private PhotoSet photoList;
 	
+   
+   /**
+	 * PanoramioAPI Constructor
+	 * 
+	 * @param photoList
+	 * @throws NoPhotosFoundException
+	 */
 	public PanoramioAPI(PhotoSet photoList) throws NoPhotosFoundException {
 		defaultSize = "medium";
 		defaultNumber = Globals.photos_number_to_get; 
@@ -32,6 +39,12 @@ public class PanoramioAPI {
 		
 	}
 	
+    /**
+	 * PanoramioAPI Constructor
+	 * 
+	 * @param photoList
+	 * @throws NoPhotosFoundException
+	 */
 	public PanoramioAPI(PhotoSet photoList, int numberPhotos) throws NoPhotosFoundException {
 		defaultSize = "square";
 		defaultNumber = numberPhotos; 
@@ -43,29 +56,39 @@ public class PanoramioAPI {
 	}
 
 
-	// TODO: put code slightly more readable
+	  /**
+	 * Parser of json message returned by Panoramio
+	 * 
+	 * @param replyMsg
+	 * @throws NoPhotosFoundException
+	 */
 	public void jsonParser(String replyMsg) throws NoPhotosFoundException {
 
 
 		try {
 
+      // Retrieves picture count and photo array 
 			JSONObject jsonMsg = new JSONObject(replyMsg);
 			Log.v(log, "entered jsonParser");
 			
-
 			int count = Integer.parseInt(jsonMsg.getString("count"));
-			
-			if (count == 0)
-			{
+			if (count == 0) {
 				throw new NoPhotosFoundException(); 
 			}
+         
 			JSONArray jsonArray = jsonMsg.getJSONArray("photos");
+
+
 
 			Log.v(log, "found " + count + " photos");
 			Log.v(log, "size of array stored: " + jsonArray.length());
 			Log.v(log, "photos: " + jsonMsg.getString("photos"));
 			
+         
+         
+         
 			// build picture TODO: define array limit?
+      // Processes data from pictures array 
 			for (int i=0; i!=jsonArray.length(); i++) {
 				
 				JSONObject img = jsonArray.getJSONObject(i);
@@ -78,7 +101,7 @@ public class PanoramioAPI {
 				String fileUrl = img.getString("photo_file_url");
 
 
-				//TODO: verify if float coordinates are needed
+
 				double longitude = (Double.parseDouble(img.getString("longitude")));
 				double latitude = Double.parseDouble(img.getString("latitude"));
 				
@@ -91,16 +114,17 @@ public class PanoramioAPI {
 				String ownerName = img.getString("owner_name");
 				String ownerUrl = img.getString("owner_url");
 
+
+        // constructs photo object 
 				Photo newPhoto = new Photo(id, title, webUrl, fileUrl, 
 						longitude, latitude, width, height,
 						uploadDate, ownerId, ownerName, ownerUrl, 0, "Panoramio");
-
+ 
+        // adds photo to list 
 				photoList.addPhoto(newPhoto);
 			}
-
+         
 			Log.v(log, "left jsonParser cycle");
-	
-
 
 
 		} catch (JSONException e) {
@@ -111,6 +135,7 @@ public class PanoramioAPI {
 
 
 	/**
+   * Gets pictures for a given location (uses default settings)
 	 * 
 	 * @param minLong: minimum longitude
 	 * @param minLat: minimum latitude
@@ -125,10 +150,21 @@ public class PanoramioAPI {
 
 	}
 
+
+	/**
+	 * Gets pictures for a location 
+	 * 
+	 * @param minLong: minimum longitude
+	 * @param minLat: minimum latitude
+	 * @param maxLong: maximum longitude
+	 * @param maxLat: maximun latitude
+	 * @return
+	 * @throws NoPhotosFoundException 
+	 */
 	public void getPictures(double minLat, double minLong, double maxLat, double maxLong, String size, int number, String set) throws NoPhotosFoundException {
 
-		
-
+	 
+    // Constructs Panoramio url
 		String method = "GET";
 		String urlString = "http://www.panoramio.com/map/get_panoramas.php?" +
 		"set=" + set + "&from=0&to=" + number +
@@ -137,13 +173,12 @@ public class PanoramioAPI {
 		"&size=" + size + "&mapfilter=true";
 
 		URL url;
-
 		Log.d("PanoramioAPI", "URL sent: "+ urlString);
 		
 		try {
+      
+      // Establishes connection to Panoramio (GET)
 			url = new URL(urlString);
-
-
 
 			HttpURLConnection connection;
 
@@ -154,6 +189,8 @@ public class PanoramioAPI {
 			if (connection.getResponseCode() != 200) {
 				throw new IOException(connection.getResponseMessage());
 			}
+         
+         
 
 			// Buffer the result into a string
 			BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -168,12 +205,9 @@ public class PanoramioAPI {
 
 
 
-			// parse the results
+			// parse the results (json format)
 			jsonParser(sb.toString());
 			
-
-			//return sb.toString();
-			//return message;
 		
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
