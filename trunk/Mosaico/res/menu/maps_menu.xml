@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu
   xmlns:android="http://schemas.android.com/apk/res/android">
-  	<item android:id="@+id/zoom_to_current" android:title="Current Location" android:orderInCategory="1"></item>
-    <item android:id="@+id/layouts" android:title="Change Layout" android:orderInCategory="2">
+  	<item android:id="@+id/zoom_to_current" android:title="Current Location" android:orderInCategory="1" android:icon="@drawable/ic_menu_mylocation"></item>
+    <item android:id="@+id/layouts" android:title="Change Layout" android:orderInCategory="2" android:icon="@drawable/ic_menu_mapmode">
         <menu>
             <item android:orderInCategory="1" android:id="@+id/layout_map" android:title="Map"></item>
             <item android:orderInCategory="2" android:title="Satellite" android:id="@+id/layout_satellite"></item>

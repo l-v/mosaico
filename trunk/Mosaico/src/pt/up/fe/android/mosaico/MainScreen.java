@@ -276,8 +276,6 @@ public class MainScreen extends Activity {
 			// Launch Preference activity
 			Intent i = new Intent(MainScreen.this, Preferences.class);
 			startActivityForResult(i, Globals.ACTIVITY_PREFERENCES);
-//			Intent pref = new Intent(this, Settings.class);
-//			startActivity(pref);
 			return true;
 		case R.id.exit_app:
 			finish();
