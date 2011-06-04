@@ -25,10 +25,10 @@ public class FlickrAPI {
 	 */
 	private int defaultNumber; // number of images: <=100
 	private String log = "FlickrLog";
-	private PhotoSet photoList;
+	private PhotoSet photoList; 
 
 	public FlickrAPI(PhotoSet photoList) throws NoPhotosFoundException {
-		defaultNumber = Globals.NUMBER_PHOTOS_TO_GET; 
+		defaultNumber = ((int) (Globals.photos_number_to_get / 2)); 
 		this.photoList = photoList;
 		
 		getPictures(photoList.getCurrentLatitude(), photoList.getCurrentLongitude(), photoList.getMaxDistance());
