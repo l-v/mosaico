@@ -5,4 +5,5 @@
 		<EditTextPreference android:title="Password" android:summary="Your identi.ca password" android:key="password"></EditTextPreference>
 		<EditTextPreference android:title="Photo Range" android:key="photos_range" android:defaultValue="2" android:summary="Set the range of photos to be retrieved. In km."></EditTextPreference>
 		<EditTextPreference android:key="photos_number" android:title="Photos Number" android:summary="How many photos would you like to show on the main screen?" android:defaultValue="50"></EditTextPreference>
+		<CheckBoxPreference android:key="force_gps_usage" android:title="Force GPS usage" android:defaultValue="false" android:summary="Use data only from GPS provider to retrieve location. "></CheckBoxPreference>
 </PreferenceScreen>
