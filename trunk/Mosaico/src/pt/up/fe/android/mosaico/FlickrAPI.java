@@ -28,7 +28,7 @@ public class FlickrAPI {
 	private PhotoSet photoList; 
 
 	public FlickrAPI(PhotoSet photoList) throws NoPhotosFoundException {
-		defaultNumber = ((int) (Globals.photos_number_to_get / 2)); 
+		defaultNumber = ((int) Math.floor(Globals.photos_number_to_get / 2.0)); 
 		this.photoList = photoList;
 		
 		getPictures(photoList.getCurrentLatitude(), photoList.getCurrentLongitude(), photoList.getMaxDistance());

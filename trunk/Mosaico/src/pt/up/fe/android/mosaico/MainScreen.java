@@ -161,44 +161,36 @@ public class MainScreen extends Activity {
 	{
 		try {
 		final ProgressDialog pd = ProgressDialog.show(this, "Mosaico","Loading Photos...", true);
-		
-		if (currentLocation != null)
-		{
-			Handler handler = new Handler();
-			Thread t = new Thread() { 
-				public void run() {
-					try {	
-						myPhotos = new PhotoSet(currentLocation.getLatitude(), currentLocation.getLongitude(), Globals.photos_range);
-						new PanoramioAPI(myPhotos);
-						new FlickrAPI(myPhotos);
-						System.out.println("tamanho do array: " + myPhotos.getList().size());
-						gridview.setAdapter(new ImageAdapter(MainScreen.this, myPhotos));
-						gridview.setOnItemClickListener(new OnItemClickListener() { 
-							
-							@Override
-							public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-							    ImageAdapter ad = (ImageAdapter) arg0.getAdapter();
-							    popPic dialog = new popPic(arg1.getContext(), ad.getItem(arg2));
-								dialog.show();
-							}
-						});
-						pd.dismiss(); // dismiss the loading photos screen
-						} catch (NoPhotosFoundException e)
-						{
-							pd.dismiss(); // dismiss the loading photos screen
-							Log.d(TAG, e.getMessage());
-							Log.v(TAG, "Coldn't retrieve photos");
-							// cannot put toast here - this method is called from another thread
+		final Handler handler = new Handler();
+		Thread t = new Thread() { 
+			public void run() {
+				try {	
+					myPhotos = new PhotoSet(currentLocation.getLatitude(), currentLocation.getLongitude(), Globals.photos_range);
+					new PanoramioAPI(myPhotos);
+					new FlickrAPI(myPhotos);
+					System.out.println("tamanho do array: " + myPhotos.getList().size());
+					gridview.setAdapter(new ImageAdapter(MainScreen.this, myPhotos));
+					
+					gridview.setOnItemClickListener(new OnItemClickListener() { 
+						
+						@Override
+						public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+						    ImageAdapter ad = (ImageAdapter) arg0.getAdapter();
+						    popPic dialog = new popPic(arg1.getContext(), ad.getItem(arg2));
+							dialog.show();
 						}
-				};
-			}; // end of thread 
-			handler.post(t); // start the thread
-		}
-		else 
-		{
-			pd.dismiss(); // dismiss the progress dialog "loading photos"
-			Toast.makeText(this, R.string.photos_not_loaded, Toast.LENGTH_LONG).show();
-		}
+					});
+					pd.dismiss(); // dismiss the loading photos screen
+					} catch (NoPhotosFoundException e)
+					{
+						pd.dismiss(); // dismiss the loading photos screen
+						Log.d(TAG, e.getMessage());
+						Log.v(TAG, "Coldn't retrieve photos");
+						// cannot put toast here - this method is called from another thread
+					}
+			}; // end of run()
+		}; // end of thread 
+		handler.post(t); // start the thread
 		} catch (Exception e)
 		{
 			Toast.makeText(this, "Couldn't show progress dialog", Toast.LENGTH_LONG).show();
