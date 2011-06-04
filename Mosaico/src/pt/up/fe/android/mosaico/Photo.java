@@ -6,7 +6,7 @@ import android.graphics.Bitmap;
 public class Photo {
 	
 	// delete all fields not needed later
-	private int id;	
+	private long id;	
 	private String title;
 	private String webUrl;
 	private String fileUrl;
@@ -23,7 +23,7 @@ public class Photo {
 	
 	private String uploadDate;
 	
-	private int ownerId;
+	private String ownerId;
 	private String ownerName;
 	private String ownerUrl;
 	/** Distance in km to the current position, to be set by the PhotoSet.addPhoto() method.
@@ -40,6 +40,7 @@ public class Photo {
 	 * @param imgTitle
 	 * @param imgWebUrl
 	 * @param imgFileUrl
+	 * @param thumbUrl 
 	 * @param imgLong
 	 * @param imgLat
 	 * @param imgWidth
@@ -49,15 +50,15 @@ public class Photo {
 	 * @param imgOwnerName
 	 * @param imgOwnerUrl
 	 */
-	Photo (int imgId, String imgTitle, String imgWebUrl, String imgFileUrl, 
-			double imgLong, double imgLat, int imgWidth, int imgHeight,
-			String imgUpload, int imgOwnerId, String imgOwnerName, String imgOwnerUrl, int site, String siteName) {
+	Photo (long imgId, String imgTitle, String imgWebUrl, String imgFileUrl,
+			String thumbUrl, double imgLong, double imgLat, int imgWidth, int imgHeight,
+			String imgUpload, String imgOwnerId, String imgOwnerName, String imgOwnerUrl, int site, String siteName) {
 		
 		id = imgId;
 		title = imgTitle;
 		webUrl = imgWebUrl;
 		fileUrl = imgFileUrl;
-		
+		this.thumbUrl = thumbUrl;
 		longitude = imgLong;
 		latitude = imgLat;
 		
@@ -77,7 +78,30 @@ public class Photo {
 		this.siteName = siteName;
 		
 	}
-	
+	/*
+	public Photo(long id, String title, String webUrl, String fileUrl,
+			double longitude, double latitude, int width, int height,
+			String uploadDate, String ownerId, String ownerUrl, String thumbUrl) {
+		
+		this.id = id;
+		this.title = title;
+		this.webUrl = webUrl;
+		this.fileUrl = fileUrl;
+		
+		this.longitude = longitude;
+		this.latitude = latitude;
+		
+		this.width = width;
+		this.height = height;
+		
+		this.uploadDate = uploadDate;
+		
+		//this.ownerId = ownerId;
+		this.ownerUrl = ownerUrl;
+		this.thumbUrl = thumbUrl;
+		this.site = 1;
+	}*/
+
 	public String getSiteName() {
 		return siteName;
 	}
@@ -148,9 +172,18 @@ public class Photo {
 	 * @return
 	 */
 	public Bitmap getThumb(){
-		if (thumbnail == null)
-			thumbnail = ImgDownload.getImage(Globals.PANORAMIO_THUMB_URL + id + ".jpg");
-		
+		if (this.site == 1) { //If it's from Flickr 
+			if (thumbnail == null) {
+				//System.out.println("Thumbnail:" + thumbUrl);
+				System.out.println("File url:" + thumbUrl);
+				thumbnail = ImgDownload.getImage(thumbUrl);
+				//thumbnail = ImgDownload.resize(thumbnail,60,60);
+			}
+		} else
+		if (this.site == 0) {
+			if (thumbnail == null)
+				thumbnail = ImgDownload.getImage(thumbUrl);
+		}
 		return thumbnail;
 	}
 	

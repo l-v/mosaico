@@ -170,6 +170,8 @@ public class MainScreen extends Activity {
 					try {	
 						myPhotos = new PhotoSet(currentLocation.getLatitude(), currentLocation.getLongitude(), Globals.photos_range);
 						new PanoramioAPI(myPhotos);
+						new FlickrAPI(myPhotos);
+						System.out.println("tamanho do array: " + myPhotos.getList().size());
 						gridview.setAdapter(new ImageAdapter(MainScreen.this, myPhotos));
 						gridview.setOnItemClickListener(new OnItemClickListener() { 
 							

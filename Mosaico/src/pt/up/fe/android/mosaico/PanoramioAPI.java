@@ -110,14 +110,15 @@ public class PanoramioAPI {
 				
 				String uploadDate = img.getString("upload_date");
 			
-				int ownerId = Integer.parseInt(img.getString("owner_id"));
+				String ownerId = img.getString("owner_id");
 				String ownerName = img.getString("owner_name");
 				String ownerUrl = img.getString("owner_url");
 
 
         // constructs photo object 
+				String thumbUrl = Globals.PANORAMIO_THUMB_URL + id + ".jpg";
 				Photo newPhoto = new Photo(id, title, webUrl, fileUrl, 
-						longitude, latitude, width, height,
+						thumbUrl, longitude, latitude, width, height,
 						uploadDate, ownerId, ownerName, ownerUrl, 0, "Panoramio");
  
         // adds photo to list 
