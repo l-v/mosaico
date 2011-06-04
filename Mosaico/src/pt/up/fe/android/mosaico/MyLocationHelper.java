@@ -7,6 +7,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 
 
@@ -38,11 +39,47 @@ public class MyLocationHelper {
 	    	 // create the dialog and return it
 			 alertDialog = builder.create();
 			 alertDialog.show();
-		
+			 
+			 Handler handler = new Handler();
+			 Runnable showAlert = new Runnable() {
+				 public void run() {
+					 alertDialog.show();
+				 };
+			 };
+			 handler.post(showAlert);
 		if (lm == null)
 			lm = (LocationManager) context
 					.getSystemService(Context.LOCATION_SERVICE);
 
+		//////////////
+		// this is how it will work if the force_gps_usage is true from the preferences
+		/////////////
+		if (Globals.force_gps_usage == true)
+		{
+			Log.v(TAG, "Force GPS usage is ON");
+			// exceptions will be thrown if provider is not permitted.
+			try {
+				isGpsEnabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+			} catch (Exception ex) {
+				Log.v(TAG, "isGPSEnabled: " + isGpsEnabled + ex.toString());
+			}
+			// now if gps in not enabled throw the exception to turn it on
+			if (!isGpsEnabled) {
+				throw new Exception("No Netowork or GPS Location available");
+			}
+			// if it is enabled start the listener
+			if (isGpsEnabled)
+			{
+				lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000L, 100.0f, locationListenerGps);
+				Log.v(TAG, "started gps listener");
+			}
+			
+			Log.v(TAG, "gps enabled:" + isGpsEnabled);
+			return true;
+		}
+		///////
+		/// if force_gps_usage is false  in the Preferences
+		///////
 		// exceptions will be thrown if provider is not permitted.
 		try {
 			isGpsEnabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
@@ -92,6 +129,30 @@ public class MyLocationHelper {
 		lm.removeUpdates(locationListenerNetwork);
 
 		Location netLoc = null, gpsLoc = null;
+		
+		// get location only from GPS if force_gps_usage is true in Globals
+		if (Globals.force_gps_usage == true)
+		{
+			// check if GPS provider is enabled get the last location in gpsLoc 
+			if (isGpsEnabled)
+				gpsLoc = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+			
+			// if GPS location was retrieved
+			if (gpsLoc != null) {
+				locationResult.gotLocation(gpsLoc);			// pass the location
+				Log.v(TAG, "last location from GPS lat:" + gpsLoc.getLatitude());
+				Log.v(TAG, "last location from GPS long:" + gpsLoc.getLongitude());
+				return;
+			}
+			// worst case scenario - there is no location 
+			Log.d(TAG, "Last known gpsLoc and netLoc are null");
+			locationResult.gotLocation(null);
+			return;
+		}
+		
+		
+		
+		
 		// check which provider is enabled and get the last known location
 		if (isGpsEnabled)
 			gpsLoc = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);

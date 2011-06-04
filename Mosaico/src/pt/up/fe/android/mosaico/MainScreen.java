@@ -319,6 +319,7 @@ public class MainScreen extends Activity {
 	{// store the values of the preferences
 		Globals.identicaUsername = preferences.getString("username", null);
 		Globals.identicaPassword = preferences.getString("password", null);
+		Globals.force_gps_usage = preferences.getBoolean("force_gps_usage", false);
 		String photos_range = preferences.getString("photos_range", null);
 		String photos_number = preferences.getString("photos_number", null);
 	

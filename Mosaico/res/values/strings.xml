@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Mosaico</string>
-    <string name="gps_disabled_question">Location providers are disabled! Would you like to enable at least one now?</string>
+    <string name="gps_disabled_question">Requested location providers are disabled! Enable now?</string>
     <string name="gps_disabled_answer_yes">Settings</string>
     <string name="gps_disabled_answer_no">No</string>
     <string name="maps_question">Do you want to view photos from around?</string>
