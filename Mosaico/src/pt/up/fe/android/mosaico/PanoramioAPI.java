@@ -35,7 +35,7 @@ public class PanoramioAPI {
 			defaultNumber = ((int) (Globals.photos_number_to_get / 2) + 1); 
 		}
 		else {
-			defaultNumber = ((int) (Globals.photos_number_to_get / 2));
+			defaultNumber = ((int) Math.floor(Globals.photos_number_to_get / 2.0));
 		}
 		 
 		defaultSet = "full";

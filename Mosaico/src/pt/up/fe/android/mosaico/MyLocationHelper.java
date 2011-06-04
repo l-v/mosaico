@@ -25,7 +25,7 @@ public class MyLocationHelper {
 		// Use LocationResult callback class to pass location value from
 		// MyLocation to user code.
 		locationResult = result;
-		
+		final Handler handler = new Handler();
 		 AlertDialog.Builder builder = new AlertDialog.Builder(context);
 	    	builder.setMessage(R.string.location_searching).setTitle(R.string.app_name)
 	    	.setCancelable(false).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -33,19 +33,25 @@ public class MyLocationHelper {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					// on click cancel get last known Location
-						getLastKnownLocation();
+					Runnable getLastLocThread = new Runnable() {
+						public void run() {
+							getLastKnownLocation();
+						};
+					};
+					// on click cancel get last known Location posting the thread
+					handler.post(getLastLocThread);
 				}
 			});
 	    	 // create the dialog and return it
 			 alertDialog = builder.create();
-			 alertDialog.show();
+			 //alertDialog.show();
 			 
-			 Handler handler = new Handler();
 			 Runnable showAlert = new Runnable() {
 				 public void run() {
 					 alertDialog.show();
 				 };
 			 };
+			 // show the dialog posting it in a new thread
 			 handler.post(showAlert);
 		if (lm == null)
 			lm = (LocationManager) context
