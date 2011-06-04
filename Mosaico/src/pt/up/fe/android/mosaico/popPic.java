@@ -137,7 +137,7 @@ class popPic extends Dialog{
 			@Override
 			public void onClick(View v) {
                 //set up dialog
-                Dialog dialog = new Dialog(v.getContext());
+                final Dialog dialog = new Dialog(v.getContext());
                 dialog.setContentView(R.layout.details);
                 dialog.setTitle("Details");
                 dialog.setCancelable(true);
@@ -155,6 +155,13 @@ class popPic extends Dialog{
                 		"<br /><b>Long:</b> " + data.getLongitude() + 
                 		"<br /><b>Origin:</b> " + data.getSiteName());
                 text.setText(details);
+                text.setOnClickListener(new View.OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						dialog.dismiss();
+						
+					}});
                 dialog.show();
 			}
 		});
