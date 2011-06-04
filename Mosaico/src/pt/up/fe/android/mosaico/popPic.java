@@ -1,5 +1,6 @@
 package pt.up.fe.android.mosaico;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -18,10 +19,12 @@ import android.widget.Toast;
 class popPic extends Dialog{
 
 	private Photo data;
+	private Context mContext;
 
 	public popPic(Context context, Photo data) {
 		super(context);
 		this.data = data;
+		this.mContext = context;
 		this.setTitle(data.getTitle());
 	}
 
@@ -84,6 +87,25 @@ class popPic extends Dialog{
 		
 		/* end of the identica button code */
 		
+		/*
+		 * This runs when Show On Maps Button is called
+		 */
+		Button showOnMaps = (Button) findViewById(R.id.showOnMap);
+		
+		showOnMaps.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(final View v) {
+	
+				// create a new intent for the Google maps view
+				// and pass the current latitude and longitude in a Bundle
+				Intent intent = new Intent(mContext, GoogleMapsView.class);
+				Bundle b = new Bundle();
+				b.putDouble("LATITUDE", data.getLatitude());
+				b.putDouble("LONGITUDE", data.getLongitude());
+				intent.putExtras(b);
+				((Activity) mContext).startActivityForResult(intent, Globals.ACTIVITY_GOOGLE_MAPS);
+			}
+		});
 		Button openmaps = (Button) findViewById(R.id.openmaps);
 		/*
 		 * This runs when we press the button Go To to start google maps 
