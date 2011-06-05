@@ -4,45 +4,76 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.entity.BufferedHttpEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.net.Uri;
+import android.util.Log;
 
 /** 
  * Class that downloads images from an URL through http.
  */
 public class ImgDownload {
-	
+
 	/** 
 	 * Class that downloads a image file from an URL through http.
 	 * @param URL The URL of the image file to be downloaded.
 	 * @return the Bitmap of the image
 	 */
-	public static Bitmap getImage(String URL){
+	public static Bitmap getImage(String stringUrl){
+		/* Ideas from 
+		 * https://groups.google.com/forum/#!topic/android-developers/EKOCEVjxe-E
+		 */
 		Bitmap tmpBitmap =null;
-		InputStream in = null;        
-        try {
-            /*
-             * Sometimes the pics don't show up with this in the log:
-             * 05-31 16:19:19.877: DEBUG/skia(24187): --- decoder->decode returned false
-             * I'm making this retry until it gets the bitmap.
-             * It will only retry 5 times.
-             */
-        	int counter = 0;
-        	do{
-	            in = OpenHttpConnection(URL);
-	            tmpBitmap = BitmapFactory.decodeStream(in);
-	            counter++;
-        	}while(tmpBitmap == null && counter < 5);
-            in.close();
-        } catch (IOException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
-        return tmpBitmap;
+
+		HttpGet httpRequest = null;
+		URL url = null;
+		try {
+			url = new URL(stringUrl);
+		} catch (MalformedURLException e1) {
+			e1.printStackTrace();
+		}
+		try {
+			httpRequest = new HttpGet(url.toURI());
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+			
+		}
+		
+		HttpClient httpclient = new DefaultHttpClient();
+	    HttpResponse response = null;
+		try {
+			response = (HttpResponse) httpclient.execute(httpRequest);
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	    HttpEntity entity = response.getEntity();
+	    BufferedHttpEntity bufHttpEntity;
+		try {
+			bufHttpEntity = new BufferedHttpEntity(entity);
+		    InputStream instream = bufHttpEntity.getContent();
+		    tmpBitmap = BitmapFactory.decodeStream(instream);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return tmpBitmap;
+
 	}
 	
 	/**
