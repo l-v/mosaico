@@ -1,7 +1,6 @@
 package pt.up.fe.android.mosaico;
 
 import java.util.List;
-import de.android1.overlaymanager.*;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -11,6 +10,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.view.GestureDetector.OnDoubleTapListener;
+import android.view.GestureDetector.OnGestureListener;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,14 +23,13 @@ import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 
-public class GoogleMapsView extends MapActivity {
+public class GoogleMapsView extends MapActivity implements OnGestureListener, OnDoubleTapListener{
 	static final String TAG = "MapActivity";
 	
 	private MapView mapView;
 	private MapController mapController;
 	private GeoPoint point;
 	private GeoPoint touchedPoint;
-	OverlayManager overlayManager;
 	
 	AlertDialog.Builder builder;
 	AlertDialog alert;
@@ -61,8 +61,6 @@ public class GoogleMapsView extends MapActivity {
         listOfOverlays.add(mapOverlay);        
         mapView.invalidate();
         
-        overlayManager = new OverlayManager(getApplication(), mapView);
-        createOverlayWithListener();
 	}
 	@Override
 	protected boolean isRouteDisplayed() {
@@ -102,55 +100,7 @@ public class GoogleMapsView extends MapActivity {
 	}
 	
 	/**
-	 * Create the Overlay and implement the listener (from ready library)
-	 */
-	public void createOverlayWithListener() {
-        //Create the overlay with the push pin
-        final ManagedOverlay managedOverlay = overlayManager.createOverlay("listenerOverlay", getResources().getDrawable(R.drawable.pushpin));
-        
-        // the way we create the gesture listener
-        managedOverlay.setOnOverlayGestureListener(new ManagedOverlayGestureDetector.OnOverlayGestureListener() {
-        	
-            public boolean onZoom(ZoomEvent zoom, ManagedOverlay overlay) {
-                return false;
-            }
- 
-            public boolean onDoubleTap(MotionEvent event, ManagedOverlay overlay, GeoPoint point, ManagedOverlayItem item) {
-                 // get the long pressed location in a GeoPoint
-                 touchedPoint = mapView.getProjection().fromPixels((int) event.getX(), (int) event.getY());
-                 getAlertDialog().show(); 
-
-                return true;
-            }
-
-            public void onLongPress(MotionEvent event, ManagedOverlay arg1) {
-               
-	        	    	
-            }
-
-            public boolean onScrolled(MotionEvent arg0, MotionEvent arg1,
-                    float arg2, float arg3, ManagedOverlay arg4) {
-                // TODO Auto-generated method stub
-                return false;
-            }
-
-
-            public boolean onSingleTap(MotionEvent arg0, ManagedOverlay arg1,
-                    GeoPoint arg2, ManagedOverlayItem arg3) {
-                // TODO Auto-generated method stub
-                return false;
-            }
-            
-            public void onLongPressFinished(MotionEvent event,
-                    ManagedOverlay arg1, GeoPoint arg2, ManagedOverlayItem arg3) {
-            	
-            }           
-        });
-        overlayManager.populate();
-	}
-	
-	/**
-	 * Get the dialog for returning back to mainscreen to show the photos 
+	 * Get the dialog for returning back to main screen to show the photos 
 	 * @return AlertDialog
 	 */
 	public AlertDialog getAlertDialog(){
@@ -204,4 +154,54 @@ public class GoogleMapsView extends MapActivity {
 	            return true;
 	        }
 	    }
+
+	@Override
+	public boolean onDoubleTap(MotionEvent event) {
+		// get current point and show the dialog
+		touchedPoint = mapView.getProjection().fromPixels((int) event.getX(), (int) event.getY());
+        getAlertDialog().show();
+		return true;
+	}
+	@Override
+	public boolean onDoubleTapEvent(MotionEvent e) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public boolean onSingleTapConfirmed(MotionEvent e) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public boolean onDown(MotionEvent e) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+			float velocityY) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public void onLongPress(MotionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
+			float distanceY) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public void onShowPress(MotionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public boolean onSingleTapUp(MotionEvent e) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
