@@ -5,11 +5,12 @@
     <string name="gps_disabled_answer_yes">Settings</string>
     <string name="gps_disabled_answer_no">No</string>
     <string name="maps_question">Do you want to view photos from around?</string>
-    <string name="maps_answer_yes">Sure!</string>
-    <string name="maps_answer_no">Not yet...</string>
+    <string name="maps_answer_yes">Sure</string>
+    <string name="maps_answer_no">Not here</string>
     <string name="internet_no_connection">Internet connection is not present!</string>
     <string name="location_not_found">No Netowork or GPS Location available</string>
     <string name="photos_not_loaded">Photos could not be loaded. No location found!</string>
     <string name="location_searching">Getting fresh location...</string>
     <string name="textdetails">&quot;&quot;</string>
+    <string name="photos_not_found">No photos found!\nPlease, pick another location.</string>
 </resources>
