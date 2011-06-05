@@ -175,14 +175,17 @@ public class Photo {
 		if (this.site == 1) { //If it's from Flickr 
 			if (thumbnail == null) {
 				//System.out.println("Thumbnail:" + thumbUrl);
-				System.out.println("File url:" + thumbUrl);
+				//System.out.println("File url:" + thumbUrl);
 				thumbnail = ImgDownload.getImage(thumbUrl);
 				//thumbnail = ImgDownload.resize(thumbnail,60,60);
 			}
 		} else
 		if (this.site == 0) {
-			if (thumbnail == null)
-				thumbnail = ImgDownload.getImage(thumbUrl);
+			if (thumbnail == null){
+				Bitmap tmp = ImgDownload.getImage(thumbUrl);
+				if(tmp!=null)
+					thumbnail = ImgDownload.resize(tmp,75,75);
+			}
 		}
 		return thumbnail;
 	}
