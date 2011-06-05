@@ -55,7 +55,9 @@ public class FlickrAPI {
 			
 			if (count == 0)
 			{
-				throw new NoPhotosFoundException(); 
+				Log.d("FickrAPI","No Photos Found Exception");
+				throw new NoPhotosFoundException();
+				
 			}
 			JSONArray jsonArray = jsonMsg.getJSONArray("photo");
 
@@ -64,7 +66,7 @@ public class FlickrAPI {
 			Log.v(log, "photos: " + jsonMsg.getString("photo"));
 			
 			// build picture TODO: define array limit?
-			for (int i=0; i!=jsonArray.length(); i++) {
+			for (int i=0; i<jsonArray.length(); i++) {
 				
 				JSONObject img = jsonArray.getJSONObject(i);
 				
@@ -81,7 +83,7 @@ public class FlickrAPI {
 				String thumbUrl = img.getString("url_sq");
 				String ownerName = img.getString("ownername");
 				
-				Log.v(log, "THUMB: " + thumbUrl );
+				//Log.v(log, "THUMB: " + thumbUrl );
 				
 				//TODO: verify if float coordinates are needed
 				double longitude = (Double.parseDouble(img.getString("longitude")));
@@ -155,6 +157,16 @@ public class FlickrAPI {
 			+  "&per_page=" + number
 			+  "&lat=" + curLat
 			+  "&lon=" + curLong
+			
+			/* To get only outdoor photos 
+			 * NOTE: doesn't work, it seems flickr has not implemented it
+			 */
+			//+  "&geo_context=2" 
+			
+			/* to get more relevant photos first 
+			 * and to make them not be all from the same guy
+			 */
+			+  "&sort=interestingness-desc" 
 			+  "&radius=" + maxDist
 			+  "&extras=geo,url_m,url_sq,date_upload,owner_name"
 			+  "&format=json&nojsoncallback=1";	
