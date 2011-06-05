@@ -36,7 +36,7 @@ public class MainScreen extends Activity {
 	
 	private SharedPreferences preferences;
 	
-	private Location currentLocation; 
+	private Location currentLocation;  
 	private MyLocationHelper myLocationHelper = new MyLocationHelper();
 	
 	public static final String PREFS_NAME = "MosaicoPrefs"; //Preferences file
