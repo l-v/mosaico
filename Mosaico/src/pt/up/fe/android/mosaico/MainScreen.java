@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -185,8 +186,12 @@ public class MainScreen extends Activity {
 					{
 						pd.dismiss(); // dismiss the loading photos screen
 						Log.d(TAG, e.getMessage());
-						Log.v(TAG, "Coldn't retrieve photos");
-						// cannot put toast here - this method is called from another thread
+						Runnable showErrorToast = new Runnable() { 
+							public void run() {
+								Toast.makeText(MainScreen.this, R.string.photos_not_found, Toast.LENGTH_LONG).show();
+							};
+						};
+						handler.post(showErrorToast);
 					}
 			}; // end of run()
 		}; // end of thread 
@@ -315,7 +320,7 @@ public class MainScreen extends Activity {
 		String photos_range = preferences.getString("photos_range", null);
 		String photos_number = preferences.getString("photos_number", null);
 	
-		try {
+		try { 
 		Globals.photos_range = Integer.valueOf(photos_range);
 		Globals.photos_number_to_get = Integer.valueOf(photos_number);
 		} catch( NumberFormatException e)
