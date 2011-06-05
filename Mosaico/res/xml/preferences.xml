@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
-  xmlns:android="http://schemas.android.com/apk/res/android">
+  xmlns:android="http://schemas.android.com/apk/res/android" android:title="Mosaico Preferences">
+		<PreferenceCategory android:title="identi.ca" android:summary="Credentials settings">
 		<EditTextPreference android:title="Username" android:summary="Your identi.ca username" android:key="username"></EditTextPreference>
 		<EditTextPreference android:title="Password" android:summary="Your identi.ca password" android:key="password"></EditTextPreference>
+		</PreferenceCategory>
+		<PreferenceCategory android:title="Photos" android:summary="Settings for the photos">
 		<EditTextPreference android:title="Photo Range" android:key="photos_range" android:defaultValue="2" android:summary="Set the range of photos to be retrieved. In km."></EditTextPreference>
 		<EditTextPreference android:key="photos_number" android:title="Photos Number" android:summary="How many photos would you like to show on the main screen?" android:defaultValue="50"></EditTextPreference>
+		</PreferenceCategory>
+		<PreferenceCategory android:title="Location Settings" android:summary="Settings for retrieving location">
 		<CheckBoxPreference android:key="force_gps_usage" android:title="Force GPS usage" android:defaultValue="false" android:summary="Use data only from GPS provider to retrieve location. "></CheckBoxPreference>
+		</PreferenceCategory>
 </PreferenceScreen>
