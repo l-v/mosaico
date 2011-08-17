@@ -12,4 +12,22 @@
 		<PreferenceCategory android:title="Location Settings" android:summary="Settings for retrieving location">
 		<CheckBoxPreference android:key="force_gps_usage" android:title="Force GPS usage" android:defaultValue="false" android:summary="Use data only from GPS provider to retrieve location. "></CheckBoxPreference>
 		</PreferenceCategory>
+		<PreferenceCategory android:title="About">
+			<Preference
+				android:title="Mosaico"
+	        	android:summary="@string/about_info"
+	        	android:selectable="false"
+	            android:key="customPrefInformation" />
+			<Preference
+				android:title="Developers"
+	        	android:summary="@string/about_developers"
+	        	android:selectable="false"
+	            android:key="customPrefDevelopers" />	            
+	        <Preference
+				android:title="Website"
+	        	android:summary="http://code.google.com/p/mosaico/"
+	        	android:selectable="false"
+	            android:key="customPrefWebsite" />
+
+		</PreferenceCategory>
 </PreferenceScreen>
