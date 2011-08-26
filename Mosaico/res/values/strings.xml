@@ -13,6 +13,6 @@
     <string name="location_searching">Getting fresh location...</string>
     <string name="textdetails">&quot;&quot;</string>
     <string name="photos_not_found">No photos found!\nPlease, pick another location.</string>
-    <string name="about_developers">Alexander Lazarov\nLiliana Vilela\nJoão Guedes\nRicardo Teixeira</string>
+    <string name="about_developers">Aleksandar Lazarov\nLiliana Vilela\nJoão Guedes\nRicardo Teixeira</string>
     <string name="about_info">Developed in 2011 for the Distributed Systems course by students of Computer Engineering at the Faculty of Engineering of University of Porto\nhttp://www.fe.up.pt/</string>
 </resources>
