@@ -1,4 +1,4 @@
-#summary Things to send to the teacher so he can send the app to android market.
+#summary Things necessary to send the app to android market.
 
 = APK =
 Is in the downloads section
