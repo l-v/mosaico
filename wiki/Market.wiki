@@ -3,14 +3,16 @@
 = APK =
 Is in the downloads section
 
-http://code.google.com/p/mosaico/downloads/detail?name=Mosaico%20v1.0.apk&can=2&q=
+http://code.google.com/p/mosaico/downloads/detail?name=Mosaico%20v1.0.apk
 
 direct link: http://mosaico.googlecode.com/files/Mosaico%20v1.0.apk
 
 
 = Screenshots =
 
-http://mosaico.googlecode.com/files/Screenshots.zip
+http://code.google.com/p/mosaico/downloads/detail?name=Screenshots.zip
+
+direct link: http://mosaico.googlecode.com/files/Screenshots.zip
 
 = Description =
 
@@ -26,5 +28,8 @@ Features supported:
  * Store identi.ca credentials
 
 = Icon =
+In the downloads.
 
-http://mosaico.googlecode.com/files/icon512.png
+http://code.google.com/p/mosaico/downloads/detail?name=icon512.png
+
+Direct link: http://mosaico.googlecode.com/files/icon512.png
