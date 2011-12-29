@@ -25,4 +25,4 @@ Features supported:
 
 = Icon =
 
-http://code.google.com/p/mosaico/source/browse/wiki/icon512.png
+http://mosaico.googlecode.com/files/icon512.png
