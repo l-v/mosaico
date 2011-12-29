@@ -12,10 +12,8 @@ To do so it uses geotagged photos from Panoramio and Flickr.
 After you review a photo and its details you can share a link to it in your identi.ca timeline or get directions to its location using Google Navigation.
 
 Features supported:
-* Obtain current location from GPS or Networks
-* Choose any location from a map
-* Set number and range of photos displayed
-* Get directions using Google Navigation
-* Store identi.ca credentials
-
-
+ * Obtain current location from GPS or Networks
+ * Choose any location from a map
+ * Set number and range of photos displayed
+ * Get directions using Google Navigation
+ * Store identi.ca credentials
