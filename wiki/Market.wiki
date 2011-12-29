@@ -30,6 +30,6 @@ Features supported:
 = Icon =
 In the downloads.
 
-http://code.google.com/p/mosaico/downloads/detail?name=icon512.png
+[http://code.google.com/p/mosaico/downloads/detail?name=icon512.png Icon 512x512]
 
-Direct link: http://mosaico.googlecode.com/files/icon512.png
+http://mosaico.googlecode.com/files/icon512.png
