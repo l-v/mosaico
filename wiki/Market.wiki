@@ -3,7 +3,12 @@
 = APK =
 Is in the downloads section
 
+http://code.google.com/p/mosaico/downloads/detail?name=Mosaico%20v1.0.apk&can=2&q=
+
+
 = Screenshots =
+
+
 
 = Description =
 
@@ -17,3 +22,7 @@ Features supported:
  * Set number and range of photos displayed
  * Get directions using Google Navigation
  * Store identi.ca credentials
+
+= Icon =
+
+http://code.google.com/p/mosaico/source/browse/wiki/icon512.png
