@@ -1,0 +1,3 @@
+<img src='http://i193.photobucket.com/albums/z251/anlazarov/Projects/mosaico-main.png' align='right' width='300' />
+Mosaico is an aplication that shows a grid of photos taken near a location.<br> To do so it uses geotagged photos from <a href='http://panoramio.com/'>Panoramio</a> and <a href='http://flickr.com/'>Flickr</a>. <br>
+After you review a photo and its details you can post it to your <a href='http://identi.ca/'>identi.ca</a> profile.

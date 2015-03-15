@@ -1,0 +1,1 @@
+http://dev.twitter.com/doc/post/statuses/update

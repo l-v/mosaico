@@ -1,0 +1,1 @@
+http://www.panoramio.com/api/data/api.html
